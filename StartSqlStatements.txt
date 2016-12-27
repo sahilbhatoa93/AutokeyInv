@@ -1,0 +1,12 @@
+create database autokey_inventory;
+use autokey_inventory;
+create table alerttable (id int primary key auto_increment,AlertName varchar(100),invName varchar(200),userName varchar(200),AlertTime varchar(50));
+create table category (category_id int primary key auto_increment,category_name varchar(100),subCategory_name varchar(100));
+create table carbrandtable (id int primary key auto_increment,brandCode varchar(30),brandName varchar(30));
+create table inventory (id int primary key auto_increment,sku varchar(20),invName varchar(20),brand varchar(20),itemCode varchar(20),noOfItems varchar(20),imageURL mediumblob,category varchar(20),subcategory varchar(30),description varchar(500),fccid varchar(20),ic varchar(20),noOfBUttons varchar(20),buttonConfiguration varchar(20),emergencyKey varchar(20),batteryPartNumber varchar(20),productnotes varchar(500),restocklimit varchar(5)); 
+create table invtable (id int primary key auto_increment,inventoryCode varchar(30),inventoryName varchar(30),itemLimit int);
+create table loginprofile (id int primary key auto_increment,name varchar(100),password varchar(100),profile varchar(10),LoginID varchar(10),email varchar(50),alertList varchar(5000));
+insert into loginprofile values (null,'admin','admin','ADMIN','admin',null,null);
+create table shippers (id int primary key auto_increment,shippername varchar(30),shipperaddress varchar(30),shipperEmail varchar(30),shipperphoneno varchar(30));
+create table transfer (id int primary key auto_increment,transferID varchar(100),sku varchar(30),itemcodefrom varchar(10),itemcodeto varchar(10),noOfItems varchar(30),intiator varchar(20),tranfertime datetime,status varchar(20),fromInv varchar(20),toInv varchar(20),category varchar(50),subcategory varchar(50),brand varchar(50));
+

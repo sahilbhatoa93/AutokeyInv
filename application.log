@@ -1,0 +1,133 @@
+2016-Sep-22 12:21:24,539 [http-bio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet 
+  INFO  FrameworkServlet 'dispatcher_autokey': initialization started
+2016-Sep-22 12:21:24,563 [http-bio-8080-exec-1] org.springframework.web.context.support.XmlWebApplicationContext 
+  INFO  Refreshing WebApplicationContext for namespace 'dispatcher_autokey-servlet': startup date [Thu Sep 22 12:21:24 EDT 2016]; root of context hierarchy
+2016-Sep-22 12:21:24,599 [http-bio-8080-exec-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 
+  INFO  Loading XML bean definitions from ServletContext resource [/WEB-INF/dispatcher_autokey-servlet.xml]
+2016-Sep-22 12:21:24,721 [http-bio-8080-exec-1] org.springframework.context.annotation.ClassPathBeanDefinitionScanner 
+  INFO  JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+2016-Sep-22 12:21:24,866 [http-bio-8080-exec-1] org.springframework.beans.factory.config.PropertyPlaceholderConfigurer 
+  INFO  Loading properties file from ServletContext resource [/WEB-INF/sql.properties]
+2016-Sep-22 12:21:24,872 [http-bio-8080-exec-1] org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor 
+  INFO  JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2016-Sep-22 12:21:24,881 [http-bio-8080-exec-1] org.springframework.beans.factory.support.DefaultListableBeanFactory 
+  INFO  Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@4546a7a2: defining beans [org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0,org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,multipartResolver,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.web.servlet.view.InternalResourceViewResolver#0,ds,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#0,org.springframework.format.support.FormattingConversionServiceFactoryBean#0,org.springframework.validation.beanvalidation.LocalValidatorFactoryBean#0,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#0,org.springframework.web.servlet.handler.MappedInterceptor#0,org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#0,org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver#0,org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver#0,baseController,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.context.annotation.internalPersistenceAnnotationProcessor,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0]; root of factory hierarchy
+2016-Sep-22 12:21:24,979 [http-bio-8080-exec-1] org.springframework.web.servlet.handler.SimpleUrlHandlerMapping 
+  INFO  Mapped URL path [/js/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2016-Sep-22 12:21:25,050 [http-bio-8080-exec-1] org.springframework.jdbc.datasource.DriverManagerDataSource 
+  INFO  Loaded JDBC driver: com.mysql.jdbc.Driver
+2016-Sep-22 12:21:25,082 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/createInventory],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.createInventory()
+2016-Sep-22 12:21:25,082 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/loginRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.login(model.Login,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-Sep-22 12:21:25,085 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/logout],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.logout(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-Sep-22 12:21:25,086 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/removeInventory],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.removeInventory()
+2016-Sep-22 12:21:25,087 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/Reschedule],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.Reschedule()
+2016-Sep-22 12:21:25,087 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/removeTechnician],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.removeTechnician()
+2016-Sep-22 12:21:25,088 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updatePassword],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updatePassword()
+2016-Sep-22 12:21:25,089 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/searchResultTable],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.searchResults(model.Item)
+2016-Sep-22 12:21:25,091 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updatesearch],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updatesearch()
+2016-Sep-22 12:21:25,092 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/receiveshipments],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.receiveshipments()
+2016-Sep-22 12:21:25,092 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/transferStocks],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.transferStocks()
+2016-Sep-22 12:21:25,097 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/addnewitem],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.addNewItems()
+2016-Sep-22 12:21:25,098 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/login],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.loginpage(model.Login)
+2016-Sep-22 12:21:25,099 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/imageServlet],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void controller.BaseController.imageServlet(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-Sep-22 12:21:25,099 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/searchforkey],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.searchEntry()
+2016-Sep-22 12:21:25,100 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/addTechnician],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.addTechnician()
+2016-Sep-22 12:21:25,100 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updateTechnician],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updateTechnician()
+2016-Sep-22 12:21:25,101 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/newkeyentry],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.newKeyEntryRequest(model.Key)
+2016-Sep-22 12:21:25,102 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/makenewkey],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.openMakeNewkeyPage()
+2016-Sep-22 12:21:25,102 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updatesearchResultTable],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updatesearchResults(model.Item)
+2016-Sep-22 12:21:25,103 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updateimageServlet],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void controller.BaseController.updateimageServlet(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-Sep-22 12:21:25,103 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/stockTransferRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.stockTransferRequest(model.TransferObject)
+2016-Sep-22 12:21:25,104 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updateInventoryRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updateInventoryRequest(model.Inventory)
+2016-Sep-22 12:21:25,104 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/addNewCompartmentform],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.addNewCompartmentform(model.SearchObject)
+2016-Sep-22 12:21:25,105 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/createInventoryRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.createInventoryRequest(model.Inventory)
+2016-Sep-22 12:21:25,105 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/removeInventoryRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.removeInventoryRequest(model.Inventory)
+2016-Sep-22 12:21:25,113 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/addNewItemform],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.addNewItemsRequest(model.SearchObject)
+2016-Sep-22 12:21:25,114 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updateKeyInfoForm],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updateKeyInfoForm(model.SearchObject)
+2016-Sep-22 12:21:25,115 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updateTechnicianRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updateTechnicianRequest(model.Login)
+2016-Sep-22 12:21:25,115 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updatePasswordRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updatePasswordRequest(model.Login)
+2016-Sep-22 12:21:25,116 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updateInventorysearchRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updateInventorysearchRequest(model.Inventory)
+2016-Sep-22 12:21:25,116 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/searchTechnicianRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.searchTechnicianRequest(model.Login)
+2016-Sep-22 12:21:25,117 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/addnewcompartment],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.addnewcompartment()
+2016-Sep-22 12:21:25,117 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/RemoveTechnicianRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.RemoveTechnicianRequest(model.Login)
+2016-Sep-22 12:21:25,118 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/addTechnicianRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.addTechnicianRequest(model.Login)
+2016-Sep-22 12:21:25,118 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/deleteItem],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.deleteItem()
+2016-Sep-22 12:21:25,119 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/deleteItemRequest],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.deleteItem(model.Item)
+2016-Sep-22 12:21:25,119 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/createAlert],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.createAlert()
+2016-Sep-22 12:21:25,120 [http-bio-8080-exec-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping 
+  INFO  Mapped "{[/updateInventory],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.web.servlet.ModelAndView controller.BaseController.updateInventory()
+2016-Sep-22 12:21:25,145 [http-bio-8080-exec-1] org.hibernate.validator.util.Version 
+  INFO  Hibernate Validator 4.1.0.Final
+2016-Sep-22 12:21:25,153 [http-bio-8080-exec-1] org.hibernate.validator.engine.resolver.DefaultTraversableResolver 
+  INFO  Instantiated an instance of org.hibernate.validator.engine.resolver.JPATraversableResolver.
+2016-Sep-22 12:21:25,286 [http-bio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet 
+  INFO  FrameworkServlet 'dispatcher_autokey': initialization completed in 742 ms
+2016-Sep-22 12:21:25,345 [http-bio-8080-exec-1] org.quartz.impl.StdSchedulerFactory 
+  INFO  Using default implementation for ThreadExecutor
+2016-Sep-22 12:21:25,349 [http-bio-8080-exec-1] org.quartz.simpl.SimpleThreadPool 
+  INFO  Job execution threads will use class loader of thread: http-bio-8080-exec-1
+2016-Sep-22 12:21:25,363 [http-bio-8080-exec-1] org.quartz.core.SchedulerSignalerImpl 
+  INFO  Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2016-Sep-22 12:21:25,365 [http-bio-8080-exec-1] org.quartz.core.QuartzScheduler 
+  INFO  Quartz Scheduler v.2.2.1 created.
+2016-Sep-22 12:21:25,367 [http-bio-8080-exec-1] org.quartz.simpl.RAMJobStore 
+  INFO  RAMJobStore initialized.
+2016-Sep-22 12:21:25,368 [http-bio-8080-exec-1] org.quartz.core.QuartzScheduler 
+  INFO  Scheduler meta-data: Quartz Scheduler (v2.2.1) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2016-Sep-22 12:21:25,371 [http-bio-8080-exec-1] org.quartz.impl.StdSchedulerFactory 
+  INFO  Quartz scheduler 'DefaultQuartzScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+2016-Sep-22 12:21:25,371 [http-bio-8080-exec-1] org.quartz.impl.StdSchedulerFactory 
+  INFO  Quartz scheduler version: 2.2.1
+2016-Sep-22 12:21:25,373 [http-bio-8080-exec-1] org.quartz.core.QuartzScheduler 
+  INFO  Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+2016-Sep-22 12:21:25,378 [http-bio-8080-exec-1] controller.BaseController 
+  INFO  SCHEDULAR STARTED
+2016-Sep-22 12:25:21,690 [localhost-startStop-2] org.springframework.web.context.support.XmlWebApplicationContext 
+  INFO  Closing WebApplicationContext for namespace 'dispatcher_autokey-servlet': startup date [Thu Sep 22 12:21:24 EDT 2016]; root of context hierarchy
+2016-Sep-22 12:25:21,692 [localhost-startStop-2] org.springframework.beans.factory.support.DefaultListableBeanFactory 
+  INFO  Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@4546a7a2: defining beans [org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0,org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,multipartResolver,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.web.servlet.view.InternalResourceViewResolver#0,ds,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#0,org.springframework.format.support.FormattingConversionServiceFactoryBean#0,org.springframework.validation.beanvalidation.LocalValidatorFactoryBean#0,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#0,org.springframework.web.servlet.handler.MappedInterceptor#0,org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#0,org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver#0,org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver#0,baseController,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.context.annotation.internalPersistenceAnnotationProcessor,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0]; root of factory hierarchy
