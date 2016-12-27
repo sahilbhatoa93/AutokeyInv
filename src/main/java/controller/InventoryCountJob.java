@@ -219,6 +219,7 @@ public ArrayList<Item> execute(String loginID) {
 			    	 item.setBatteryPartNumber(rs2.getString("batteryPartNUmber"));
 			    	 item.setRestockLimit(rs2.getString("restocklimit"));
 			    	 item.setModel(rs2.getString("model"));
+			    	 item.setTrim(rs2.getString("trim"));
 			    	 result.add(item);
 			    	 	 
 			     }

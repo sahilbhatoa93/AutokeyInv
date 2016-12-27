@@ -454,6 +454,7 @@ public class DB {
 		    	 item.setRack(positionArray.get(0));
 		    	 item.setShelf(positionArray.get(1));
 		    	 item.setSku(rs.getString("sku"));
+		    	 item.setTrim(rs.getString("trim"));
 		    	 item.setSubCategoryName(rs.getString("subcategory"));
 		    	 result.add(item);
 		    	 }

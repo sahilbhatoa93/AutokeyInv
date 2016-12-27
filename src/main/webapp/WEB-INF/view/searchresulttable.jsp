@@ -18,6 +18,7 @@
     <td>Category</td>
     <td>Sub Category</td>
     <td>Model</td>
+      <td>Trim</td>
     <td>Description</td>
     <td>Rack</td>
     <td>Shelf</td>
@@ -39,6 +40,7 @@
             <td>${dataItem.categoryName}</td>
             <td>${dataItem.subCategoryName}</td>
             <td>${dataItem.model}</td>
+             <td>${dataItem.trim}</td>
             <td>${dataItem.description}</td>
             <td>${dataItem.rack}</td>
             <td>${dataItem.shelf}</td>
