@@ -394,7 +394,7 @@ public class DB {
 		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
 		     String query="";
 		     if (!(i.getBrand().equals(""))) 
-		     query = "select * from inventory where brand='"+i.getBrand()+"' and model='"+i.getModel()+"' and invName="+accessListString+";";
+		     query = "select * from inventory where brand like'%"+i.getBrand()+"%' and model like '%"+i.getModel()+"%' and invName="+accessListString+";";
 		     else if (!(i.getCategoryName().equals(""))) 
 			     query = "select * from inventory where category='"+i.getCategoryName()+"' and invName="+accessListString+";";
 		     else if (!(i.getSubCategoryName().equals(""))) 
