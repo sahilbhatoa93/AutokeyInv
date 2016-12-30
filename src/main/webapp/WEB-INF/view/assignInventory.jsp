@@ -22,7 +22,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="ca" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <body>
-<jsp:include page="employeeoptions.jsp" />
+<jsp:include page="adminoptions.jsp" />
 <form  action="assignInventoryRequest" modelAttribute="Item">
 <br><br><br><br><br><br><br><br>
    <div class="form-group" align="center">

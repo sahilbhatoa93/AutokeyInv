@@ -101,6 +101,15 @@ public class SearchObject {
 	private String fromYear;
 	private String toYear;
 	private String trim;
+	private String transponder;
+	public String getTransponder() {
+		return transponder;
+	}
+
+	public void setTransponder(String transponder) {
+		this.transponder = transponder;
+	}
+
 	public String getFromYear() {
 		return fromYear;
 	}

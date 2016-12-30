@@ -13,6 +13,7 @@
 <table class="table table-striped">
   <tr>
     <td>SKU</td>
+    <td>Item Code</td>
     <td>Inventory Name</td>
     <td>Brand</td>
     <td>Category</td>
@@ -35,6 +36,7 @@
    <c:forEach items="${dataList}" var="dataItem">
         <tr>
             <td>${dataItem.sku}</td>
+              <td>${dataItem.itemCode}</td>
             <td>${dataItem.invName}</td>
             <td>${dataItem.brand}</td>
             <td>${dataItem.categoryName}</td>

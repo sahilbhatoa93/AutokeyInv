@@ -2,8 +2,10 @@
 <html>
 <head>
    <title>Admin Options</title>
-   <link href="js/bootstrap.min.css" rel="stylesheet">
+  <link href="js/bootstrap.min.css" rel="stylesheet">
    <script src="js/jquery-1.9.1.js"></script>
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   <script src="js/jquery-ui.js"></script>
    <script src="js/bootstrap.min.js"></script>
 </head>
 <style>
@@ -80,6 +82,18 @@ li.dropdown {
       		<a href="searchDeleteSubCategoryTable">Remove</a>
     	</div>
  		 </li>
+        <li class="divider"></li>
+          <li class="dropdown">
+  		 <a href="#" class="dropbtn">Transponder</a>
+    	<div class="dropdown-content">
+     	 	<a href="addTransponder">Add</a>
+     		 <a href="searchTransponder">Update</a>
+      		<a href="searchDeleteTransponder">Remove</a>
+    	</div>
+ 		 </li>
+        
+        
+        
          <li class="divider"></li>
           <li class="dropdown">
   		 <a href="#" class="dropbtn">Brand</a>
@@ -112,11 +126,15 @@ li.dropdown {
   		 <a href="#" class="dropbtn">Item</a>
     	<div class="dropdown-content">
      	 	 <a href="addnewitem">Add New Item</a>
+     	 	 <a href="updateUnassignedItem">Update Unassigned  Item</a>
+     	 	 <a href="updateAssignedBrandTrimItem">Update Assigned Brand/Trim  Item</a>
      	 	 <a href="assignModelTrimSearch">Assign Model & Trim</a>
      		<a href="updatesearchadmin">Update Item</a>
       		<a href="deleteItem">Delete Item</a>
-      		<a href="changeLocation">Change Item Location</a>
+      		<a href="changeLocationSearch">Change Item Location</a>
       		<a href="showUnassignedItems">See Unassigned Items</a>
+      		 <a href="assignInventory">Assign Inventory</a>
+      		 <a href="showUnassignedInventoryItems">Show Unassigned Inventory Items</a>
     	</div>
  		 </li>
          <li class="divider"></li>
@@ -153,9 +171,12 @@ li.dropdown {
          <li class="divider"></li>
          <li><a href="seediscrepancies">Discrepancies</a></li>
               <li class="divider"></li>
-         <li><a href="getReorderInfo">Reorder Info</a></li>
+         <li><a href="printLabels">Print Label</a></li>
+          <li class="divider"></li>
+         <li><a href="getReorderInfo">Restock Info</a></li>
               <li class="divider"></li>
          <li><a href="logout">LogOut</a></li>
+           
    
 </ul>
 

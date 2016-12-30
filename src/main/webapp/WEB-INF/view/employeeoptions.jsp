@@ -77,9 +77,9 @@ li.dropdown {
   		 <a href="#" class="dropbtn">Item</a>
     	<div class="dropdown-content">
      	
-     		 <a href="assignInventory">Assign Inventory</a>
+     		
       		<a href="updatesearch">Update</a>
-      		<a href="showUnassignedInventoryItems">Show Unassigned Inventory Items</a>
+      		
       	</div>
  		 </li>
         

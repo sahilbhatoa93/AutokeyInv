@@ -13,6 +13,180 @@ public class Key {
 	private String categoryNamePart3;
 	private String categoryNamePart4;
 	private String categoryNamePart5;
+	private String trimPart1;
+	private String trimPart2;
+	private String trimPart3;
+	private String trimPart4;
+	private String trimPart5;
+	
+	private String fromYearPart1;
+	private String fromYearPart2;
+	private String fromYearPart3;
+	private String fromYearPart4;
+	private String fromYearPart5;
+
+	private String toYearPart1;
+	private String toYearPart2;
+	private String toYearPart3;
+	private String toYearPart4;
+	private String toYearPart5;
+	
+	private String transponderPart1;
+	private String transponderPart2;
+	private String transponderPart3;
+	private String transponderPart4;
+	private String transponderPart5;
+	
+	private String rack;
+	private String shelf;
+	private String column;
+	private String compartment;
+	
+	
+	public String getRack() {
+		return rack;
+	}
+	public void setRack(String rack) {
+		this.rack = rack;
+	}
+	public String getShelf() {
+		return shelf;
+	}
+	public void setShelf(String shelf) {
+		this.shelf = shelf;
+	}
+	public String getColumn() {
+		return column;
+	}
+	public void setColumn(String column) {
+		this.column = column;
+	}
+	public String getCompartment() {
+		return compartment;
+	}
+	public void setCompartment(String compartment) {
+		this.compartment = compartment;
+	}
+	public String getTrimPart1() {
+		return trimPart1;
+	}
+	public void setTrimPart1(String trimPart1) {
+		this.trimPart1 = trimPart1;
+	}
+	public String getTrimPart2() {
+		return trimPart2;
+	}
+	public void setTrimPart2(String trimPart2) {
+		this.trimPart2 = trimPart2;
+	}
+	public String getTrimPart3() {
+		return trimPart3;
+	}
+	public void setTrimPart3(String trimPart3) {
+		this.trimPart3 = trimPart3;
+	}
+	public String getTrimPart4() {
+		return trimPart4;
+	}
+	public void setTrimPart4(String trimPart4) {
+		this.trimPart4 = trimPart4;
+	}
+	public String getTrimPart5() {
+		return trimPart5;
+	}
+	public void setTrimPart5(String trimPart5) {
+		this.trimPart5 = trimPart5;
+	}
+	public String getFromYearPart1() {
+		return fromYearPart1;
+	}
+	public void setFromYearPart1(String fromYearPart1) {
+		this.fromYearPart1 = fromYearPart1;
+	}
+	public String getFromYearPart2() {
+		return fromYearPart2;
+	}
+	public void setFromYearPart2(String fromYearPart2) {
+		this.fromYearPart2 = fromYearPart2;
+	}
+	public String getFromYearPart3() {
+		return fromYearPart3;
+	}
+	public void setFromYearPart3(String fromYearPart3) {
+		this.fromYearPart3 = fromYearPart3;
+	}
+	public String getFromYearPart4() {
+		return fromYearPart4;
+	}
+	public void setFromYearPart4(String fromYearPart4) {
+		this.fromYearPart4 = fromYearPart4;
+	}
+	public String getFromYearPart5() {
+		return fromYearPart5;
+	}
+	public void setFromYearPart5(String fromYearPart5) {
+		this.fromYearPart5 = fromYearPart5;
+	}
+	public String getToYearPart1() {
+		return toYearPart1;
+	}
+	public void setToYearPart1(String toYearPart1) {
+		this.toYearPart1 = toYearPart1;
+	}
+	public String getToYearPart2() {
+		return toYearPart2;
+	}
+	public void setToYearPart2(String toYearPart2) {
+		this.toYearPart2 = toYearPart2;
+	}
+	public String getToYearPart3() {
+		return toYearPart3;
+	}
+	public void setToYearPart3(String toYearPart3) {
+		this.toYearPart3 = toYearPart3;
+	}
+	public String getToYearPart4() {
+		return toYearPart4;
+	}
+	public void setToYearPart4(String toYearPart4) {
+		this.toYearPart4 = toYearPart4;
+	}
+	public String getToYearPart5() {
+		return toYearPart5;
+	}
+	public void setToYearPart5(String toYearPart5) {
+		this.toYearPart5 = toYearPart5;
+	}
+	public String getTransponderPart1() {
+		return transponderPart1;
+	}
+	public void setTransponderPart1(String transponderPart1) {
+		this.transponderPart1 = transponderPart1;
+	}
+	public String getTransponderPart2() {
+		return transponderPart2;
+	}
+	public void setTransponderPart2(String transponderPart2) {
+		this.transponderPart2 = transponderPart2;
+	}
+	public String getTransponderPart3() {
+		return transponderPart3;
+	}
+	public void setTransponderPart3(String transponderPart3) {
+		this.transponderPart3 = transponderPart3;
+	}
+	public String getTransponderPart4() {
+		return transponderPart4;
+	}
+	public void setTransponderPart4(String transponderPart4) {
+		this.transponderPart4 = transponderPart4;
+	}
+	public String getTransponderPart5() {
+		return transponderPart5;
+	}
+	public void setTransponderPart5(String transponderPart5) {
+		this.transponderPart5 = transponderPart5;
+	}
 	private String subCategoryNamePart1;
 	private String subCategoryNamePart2;
 	private String subCategoryNamePart3;

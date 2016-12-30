@@ -52,14 +52,14 @@ function validateForm() {
     <td><input  name="description" type="text"  /></td>	
   </tr>
   <tr>
-    <td>Number Of Items</td>
-    <td><input  name="noOfItems" type="number" required="required" /></td>
+    <td>Emergency Key</td>
+    <td><input  name="emergencyKey" type="text"  /></td>
     <td>FCC-ID</td>
     <td><input  name="ffcId" type="text"  /></td>			
   </tr>
   <tr>
-   <td>Restock Limit</td>
-    <td><input  name="restockLimit"  type="number" required="required"/></td>	
+   <td>Battery Part Number</td>
+    <td><input  name="batteryPartNumber" type="text"  /></td>	
 			 <td>IC</td>
     <td><input  name="iC" type="text"  /></td>	</tr>
  <tr>
@@ -88,15 +88,19 @@ function validateForm() {
   </tr>
   <tr>
    <td>Sub Category</td>
-    <td> <select id="subCategoryName" name="subCategoryName" ></select></td>
-     <td>Emergency Key</td>
-    <td><input  name="emergencyKey" type="text"  /></td>
-  </tr>
-  <tr>
+    <td> <select id="subCategoryName" name="subCategoryName" onchange="transponderFilter()"></select></td>
     	 <td>Product Notes</td>
     <td><input  name="productNotes"  type="text" /></td>
-    <td>Battery Part Number</td>
-    <td><input  name="batteryPartNumber" type="text"  /></td>	
+  </tr>
+  <tr>
+  <td>Transponder</td>
+    <td><input  id="transponder" name="transponder" type="text" list='listid' />
+    
+     <datalist id='listid'>
+   
+</datalist>
+   
+    	</td>
   </tr>
 
   
@@ -159,6 +163,7 @@ function categoryFilter()
 		{
 		var opt=options[i];
 		var subCategoryName = opt.split(",");
+		
 		for (var j=0;j<subCategoryName.length;j++)
 		{
 			var e1=document.createElement('option');
@@ -171,6 +176,29 @@ function categoryFilter()
 			
     
     </script>
+    
+    <script type="text/javascript">
+    function transponderFilter()
+		{
+var select = document.getElementById("subCategoryName");
+var selectedSubCategory = select.options[select.selectedIndex].value;
+if (selectedSubCategory.toLowerCase().indexOf("transponder") !== -1)
+{
+
+		var datalist=document.getElementById("listid");
+		var transponderList=${transponderList};
+		var transponderNames=transponderList.split(",")
+		for (var j=0;j<transponderNames.length;j++)
+		{
+		var e1=document.createElement('option');
+			e1.textContent=transponderNames[j].trim();
+			e1.value=transponderNames[j].trim();
+			datalist.appendChild(e1);
+		}
+}
+
+}
+</script>
 </body>
 
 </html>

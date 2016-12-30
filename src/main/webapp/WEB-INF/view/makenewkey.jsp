@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<%@ page import="java.time.Year" %>
 <html>
 <head>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -10,7 +10,7 @@
    <script src="js/bootstrap.min.js"></script>
 <title>Make New Key</title>
 </head>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="ca" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="ca" %><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <body>
 
 <jsp:include page="employeeoptions.jsp" />
@@ -102,17 +102,30 @@
   </tr>
  <tr>
  <td>Sub Category</td>
-    <td> <select id="subCategoryNamePart1" name="subCategoryNamePart1" >
+    <td> <select id="subCategoryNamePart1" name="subCategoryNamePart1" onchange="transponderFilter1()" >
 			</select></td>
-    <td><select id="subCategoryNamePart2" name="subCategoryNamePart2" >
+    <td><select id="subCategoryNamePart2" name="subCategoryNamePart2" onchange="transponderFilter2()">
 			</select></td>		
-    <td><select id="subCategoryNamePart3" name="subCategoryNamePart3" >
+    <td><select id="subCategoryNamePart3" name="subCategoryNamePart3" onchange="transponderFilter3()">
 			</select></td>
-    <td><select id="subCategoryNamePart4" name="subCategoryNamePart4" >
+    <td><select id="subCategoryNamePart4" name="subCategoryNamePart4" onchange="transponderFilter4()">
 			</select></td>
-    <td><select id="subCategoryNamePart5" name="subCategoryNamePart5" >
+    <td><select id="subCategoryNamePart5" name="subCategoryNamePart5" onchange="transponderFilter5()">
 			</select></td>
   </tr>
+  
+  <tr>
+  <td>Transponder</td>
+    <td><input type="text" name="transponderPart1" id="transponderPart1"  list="listid"/>  <datalist id='listid'>
+</datalist>
+   </td>
+    <td><input type="text" name="transponderPart2" id="transponderPart2" list='listid'/></td>		
+    <td><input type="text" name="transponderPart3" id="transponderPart3" list='listid'></td>
+    <td><input type="text" name="transponderPart4" id="transponderPart4" list='listid'></td>
+    <td><input type="text" name="transponderPart5" id="transponderPart5" list='listid'></td>
+  </tr>
+   <tr>
+  
    <tr>
    <td>Select Car Brand</td>
    <td><select id="brandPart1" name="brandPart1" onchange="brandFilterPart1()">
@@ -172,17 +185,116 @@
 			</tr>
 			<tr>
    <td>Select Car Model</td>
-   <td><select id="modelPart1" name="modelPart1" >
+   <td><select id="modelPart1" name="modelPart1" onchange="modelFilter1()" >
 		</select></td>
-	<td><select id="modelPart2" name="modelPart2" >
+	<td><select id="modelPart2" name="modelPart2" onchange="modelFilter2()">
 		</select></td>
-	<td><select id="modelPart3" name="modelPart3" >
+	<td><select id="modelPart3" name="modelPart3" onchange="modelFilter3()">
 		</select></td>
-	<td><select id="modelPart4" name="modelPart4" >
+	<td><select id="modelPart4" name="modelPart4" onchange="modelFilter4()">
 		</select></td>
-	<td><select id="modelPart5" name="modelPart5" >
+	<td><select id="modelPart5" name="modelPart5" onchange="modelFilter5()">
 		</select></td>
 			</tr>
+	<tr>
+	<td>Select Car Trim</td>
+   <td><select id="trimPart1" name="trimPart1" ></select></td>
+		
+   <td><select id="trimPart2" name="trimPart2" ></select></td>
+		
+   <td><select id="trimPart3" name="trimPart3" ></select></td>
+			
+   <td><select id="trimPart4" name="trimPart4" ></select></td>
+			 
+   <td><select id="trimPart5" name="trimPart5" ></select></td>
+			</tr>
+	
+	<tr>
+	<td>From Year</td>
+   <td><select id="fromYearPart1" name="fromYearPart1" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+		
+   <td><select id="fromYearPart2" name="fromYearPart2" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+		
+   <td><select id="fromYearPart3" name="fromYearPart3" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+			
+   <td><select id="fromYearPart4" name="fromYearPart4" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+			 
+   <td><select id="fromYearPart5" name="fromYearPart5" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+			</tr>
+	
+	<tr>
+	<td>To Year</td>
+   <td><select id="toYearPart1" name="toYearPart1" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+		
+   <td><select id="toYearPart2" name="toYearPart2" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+		
+   <td><select id="toYearPart3" name="toYearPart3" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+			
+   <td><select id="toYearPart4" name="toYearPart4" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+			 
+   <td><select id="toYearPart5" name="toYearPart5" >
+        	<% for (int i=1980 ; i<= Year.now().getValue();i++ )
+        	{
+        	out.println("<option value='"+i+"'>"+i+"</option>");
+        	}
+        	 %>	
+   	</select></td>
+			</tr>
+			
   <tr>
    <tr>
     <td></td>
@@ -204,6 +316,7 @@
 var locationDetails=${locationMap};
 		var categoryDetails=${categoryMap};
 		var brandDetails=${brandMap};
+			var modelDetails=${modelMap};
 function categoryFilterPart1()
 		{
 		var categoryName=document.getElementById("categoryNamePart1").value;
@@ -512,6 +625,250 @@ var itemCodePart1=document.getElementById("itemCodePart1").value;
 	document.getElementById('result').value = result;
 }				
 </script>
+   <script type="text/javascript">
+    function transponderFilter1()
+		{
+var select = document.getElementById("subCategoryNamePart1");
+var selectedSubCategory = select.options[select.selectedIndex].value;
+if (selectedSubCategory.toLowerCase().indexOf("transponder") !== -1)
+{
 
+		var datalist=document.getElementById("listid");
+		var transponderList=${transponderList};
+		var transponderNames=transponderList.split(",")
+		for (var j=0;j<transponderNames.length;j++)
+		{
+		var e1=document.createElement('option');
+			e1.textContent=transponderNames[j].trim();
+			e1.value=transponderNames[j].trim();
+			datalist.appendChild(e1);
+		}
+}
+
+}
+
+
+  function transponderFilter2()
+		{
+var select = document.getElementById("subCategoryNamePart1");
+var selectedSubCategory = select.options[select.selectedIndex].value;
+if (selectedSubCategory.toLowerCase().indexOf("transponder") !== -1)
+{
+
+		var datalist=document.getElementById("listid");
+		var transponderList=${transponderList};
+		var transponderNames=transponderList.split(",")
+		for (var j=0;j<transponderNames.length;j++)
+		{
+		var e1=document.createElement('option');
+			e1.textContent=transponderNames[j].trim();
+			e1.value=transponderNames[j].trim();
+			datalist.appendChild(e1);
+		}
+}
+
+}
+
+  function transponderFilter3()
+		{
+var select = document.getElementById("subCategoryName3");
+var selectedSubCategory = select.options[select.selectedIndex].value;
+if (selectedSubCategory.toLowerCase().indexOf("transponder") !== -1)
+{
+
+		var datalist=document.getElementById("listid");
+		var transponderList=${transponderList};
+		var transponderNames=transponderList.split(",")
+		for (var j=0;j<transponderNames.length;j++)
+		{
+		var e1=document.createElement('option');
+			e1.textContent=transponderNames[j].trim();
+			e1.value=transponderNames[j].trim();
+			datalist.appendChild(e1);
+		}
+}
+
+}
+
+  function transponderFilter4()
+		{
+var select = document.getElementById("subCategoryName4");
+var selectedSubCategory = select.options[select.selectedIndex].value;
+if (selectedSubCategory.toLowerCase().indexOf("transponder") !== -1)
+{
+
+		var datalist=document.getElementById("listid");
+		var transponderList=${transponderList};
+		var transponderNames=transponderList.split(",")
+		for (var j=0;j<transponderNames.length;j++)
+		{
+		var e1=document.createElement('option');
+			e1.textContent=transponderNames[j].trim();
+			e1.value=transponderNames[j].trim();
+			datalist.appendChild(e1);
+		}
+}
+
+}
+
+  function transponderFilter5()
+		{
+var select = document.getElementById("subCategoryName5");
+var selectedSubCategory = select.options[select.selectedIndex].value;
+if (selectedSubCategory.toLowerCase().indexOf("transponder") !== -1)
+{
+
+		var datalist=document.getElementById("listid");
+		var transponderList=${transponderList};
+		var transponderNames=transponderList.split(",")
+		for (var j=0;j<transponderNames.length;j++)
+		{
+		var e1=document.createElement('option');
+			e1.textContent=transponderNames[j].trim();
+			e1.value=transponderNames[j].trim();
+			datalist.appendChild(e1);
+		}
+}
+
+}
+
+</script>
+<script type="text/javascript">
+	function modelFilter1()
+		{
+		
+		var categoryName=document.getElementById("modelPart1").value;
+		categoryName=categoryName.trim();
+		var select = document.getElementById("trimPart1");
+		if (select.childElementCount !=0)
+		{
+		while (select.firstChild) {
+ 				   select.removeChild(select.firstChild);
+			}
+		}
+		var options=modelDetails[categoryName];
+		for (var i=0;i<options.length;i++)
+		{
+		var opt=options[i];
+		var subCategoryName = opt.split(",");
+		for (var j=0;j<subCategoryName.length;j++)
+		{
+			var e1=document.createElement('option');
+			e1.textContent=subCategoryName[j];
+			e1.value=subCategoryName[j];
+			select.appendChild(e1);
+		}
+		}
+		};
+    
+    	function modelFilter2()
+		{
+		
+		var categoryName=document.getElementById("modelPart2").value;
+		categoryName=categoryName.trim();
+		var select = document.getElementById("trimPart2");
+		if (select.childElementCount !=0)
+		{
+		while (select.firstChild) {
+ 				   select.removeChild(select.firstChild);
+			}
+		}
+		var options=modelDetails[categoryName];
+		for (var i=0;i<options.length;i++)
+		{
+		var opt=options[i];
+		var subCategoryName = opt.split(",");
+		for (var j=0;j<subCategoryName.length;j++)
+		{
+			var e1=document.createElement('option');
+			e1.textContent=subCategoryName[j];
+			e1.value=subCategoryName[j];
+			select.appendChild(e1);
+		}
+		}
+		};
+    
+    	function modelFilter3()
+		{
+		
+		var categoryName=document.getElementById("modelPart3").value;
+		categoryName=categoryName.trim();
+		var select = document.getElementById("trimPart3");
+		if (select.childElementCount !=0)
+		{
+		while (select.firstChild) {
+ 				   select.removeChild(select.firstChild);
+			}
+		}
+		var options=modelDetails[categoryName];
+		for (var i=0;i<options.length;i++)
+		{
+		var opt=options[i];
+		var subCategoryName = opt.split(",");
+		for (var j=0;j<subCategoryName.length;j++)
+		{
+			var e1=document.createElement('option');
+			e1.textContent=subCategoryName[j];
+			e1.value=subCategoryName[j];
+			select.appendChild(e1);
+		}
+		}
+		};
+    
+    	function modelFilter4()
+		{
+		
+		var categoryName=document.getElementById("modelPart4").value;
+		categoryName=categoryName.trim();
+		var select = document.getElementById("trimPart4");
+		if (select.childElementCount !=0)
+		{
+		while (select.firstChild) {
+ 				   select.removeChild(select.firstChild);
+			}
+		}
+		var options=modelDetails[categoryName];
+		for (var i=0;i<options.length;i++)
+		{
+		var opt=options[i];
+		var subCategoryName = opt.split(",");
+		for (var j=0;j<subCategoryName.length;j++)
+		{
+			var e1=document.createElement('option');
+			e1.textContent=subCategoryName[j];
+			e1.value=subCategoryName[j];
+			select.appendChild(e1);
+		}
+		}
+		};
+    
+    	function modelFilter5()
+		{
+		
+		var categoryName=document.getElementById("modelPart5").value;
+		categoryName=categoryName.trim();
+		var select = document.getElementById("trimPart5");
+		if (select.childElementCount !=0)
+		{
+		while (select.firstChild) {
+ 				   select.removeChild(select.firstChild);
+			}
+		}
+		var options=modelDetails[categoryName];
+		for (var i=0;i<options.length;i++)
+		{
+		var opt=options[i];
+		var subCategoryName = opt.split(",");
+		for (var j=0;j<subCategoryName.length;j++)
+		{
+			var e1=document.createElement('option');
+			e1.textContent=subCategoryName[j];
+			e1.value=subCategoryName[j];
+			select.appendChild(e1);
+		}
+		}
+		};
+
+</script>
 </body>
 </html>

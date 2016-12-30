@@ -26,6 +26,15 @@ public class Item {
 	}
 
 	private String invName;
+	private String transponder;
+	public String getTransponder() {
+		return transponder;
+	}
+
+	public void setTransponder(String transponder) {
+		this.transponder = transponder;
+	}
+
 	public String getInvName() {
 		return invName;
 	}

@@ -153,6 +153,12 @@ public class BaseController {
 		Multimap<String, String>brandMap=db.getBrandMap();
 		String brandMapString=brandMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
 		modelAndView.addObject("brandMap",brandMapString);
+		Multimap<String, String>modelMap=db.getmodelMap();
+		String modelMapString=modelMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+		modelAndView.addObject("modelMap",modelMapString);
+		ArrayList<String>transponderList=db.getTransponderList();
+		String transponderListString=transponderList.toString().replaceAll("\\[", "'").replaceAll("\\]", "'");
+		modelAndView.addObject("transponderList",transponderListString);
 		return modelAndView;
 	}
 	
@@ -240,22 +246,46 @@ public class BaseController {
 			return new ModelAndView("error");
 	
 	}
-	
+	private Key generatedKey;
 	@RequestMapping("/newkeyentry")
 	public ModelAndView newKeyEntryRequest(Key k,@RequestParam String result)
 	{
 		
 		dB=new DB();
-		if(dB.decrementItemNumber(result,k,currentUser))
+		String result1=dB.decrementItemNumber(result,k,currentUser);
+		if (result1.equals("Operation Failed"))
+			return new ModelAndView("result","result",result1);
+		else
 		{
-			return new ModelAndView("employeeoptions");
+			generatedKey=k;
+			return new ModelAndView("keyChoice");
+		}
+	}
+	
+	
+	
+	@RequestMapping("/keyChoiceRequest")
+	public ModelAndView keyChoiceRequest(@RequestParam String choice)
+	{
+		
+		if (choice.equals("For Sale"))
+		{
+			return new ModelAndView("result","result","Operation Complete");
 		}
 		else
 		{
-			return new ModelAndView("error");	
+			return new ModelAndView("newKeyInvAssign","invName",generatedKey.getInvCode());
 		}
-		
 	}
+	
+	@RequestMapping("/newKeyInvAssignRequest")
+	public ModelAndView newKeyInvAssignRequest(Key k)
+	{
+		DB db=new DB();
+		String result=db.newKeyInvAssign(k,currentUser);
+		return new ModelAndView("result","result",result);
+	}
+	
 	
 	@RequestMapping("/searchforkey")
 	public ModelAndView searchEntry()
@@ -271,7 +301,7 @@ public class BaseController {
 	{
 		dB=new DB();
 		
-		ArrayList<Item> searchResult=dB.searchKey(i);
+		ArrayList<Item> searchResult=dB.searchKey(i,currentUser);
 		if (searchResult.size()==0)
 		{
 			return new ModelAndView("search");
@@ -281,7 +311,7 @@ public class BaseController {
 				return new ModelAndView("searchresulttable","searchResult",searchResult.get(0));
 				}
 	}
-	SearchObject searchResult;
+	Item itemObject;
 	
 	@RequestMapping(value="/imageServlet")
 	public void imageServlet(HttpServletRequest request, HttpServletResponse response)
@@ -291,7 +321,7 @@ public class BaseController {
 		try {
 		OutputStream output = response.getOutputStream();
 			
-			output.write(searchResult.getImageURLByteArray());
+			output.write(itemObject.getImageURLByteArray());
 			output.flush();
 			output.close();
 		} catch (IOException | NullPointerException s) {
@@ -342,7 +372,7 @@ public class BaseController {
 	     if (object.getInvName()==null)
 				object.setInvName("");
 		 
-		ArrayList<Item> updatesearchresulttable=db.searchKey(object);
+		ArrayList<Item> updatesearchresulttable=db.searchKey(object,currentUser);
 		
 		if (updatesearchresulttable.size()==0)
 		{
@@ -351,21 +381,21 @@ public class BaseController {
 		else
 		{
 			
-			searchResult=new SearchObject();
-			searchResult.setImageURLByteArray(updatesearchresulttable.get(0).getImageURLByteArray());
+			itemObject =new Item();
+			itemObject.setImageURLByteArray(updatesearchresulttable.get(0).getImageURLByteArray());
 		    ModelAndView mav=new ModelAndView("updatesearchresulttable","updatesearchresulttable",updatesearchresulttable.get(0));
 		    ArrayList<ArrayList<String>>list=db.getCategoryAndSubCategoryList(currentUser);
 			Multimap<String, String>categoryMap=db.getCategoryMap();
 			String categoryMapString=categoryMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
 			mav.addObject("categoryMap",categoryMapString);
-			mav.addObject("brandList",list.get(2));
+			mav.addObject("dropdownbrandList",list.get(2));
 			mav.addObject("categoryList",list.get(1));
 			Multimap<String, String>brandMap=db.getBrandMap();
 			String brandMapString=brandMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
 			mav.addObject("brandMap",brandMapString);
 			mav.addObject("selectedbrand",updatesearchresulttable.get(0).getBrand());
 			mav.addObject("selectedCategory",updatesearchresulttable.get(0).getCategoryName());
-			mav.addObject("SearchObject", updatesearchresulttable.get(0));
+		
 		return mav;
 		}
 	}
@@ -388,7 +418,7 @@ public class BaseController {
 	     if (object.getInvName()==null)
 				object.setInvName("");
 		 
-		ArrayList<Item> updatesearchresulttable=db.searchKey(object);
+		ArrayList<Item> updatesearchresulttable=db.searchKey(object,currentUser);
 		
 		if (updatesearchresulttable.size()==0)
 		{
@@ -397,14 +427,27 @@ public class BaseController {
 		else
 		{
 			
-			searchResult=new SearchObject();
-			searchResult.setImageURLByteArray(updatesearchresulttable.get(0).getImageURLByteArray());
+			itemObject=new Item();
+			itemObject=updatesearchresulttable.get(0);
+			itemObject.setImageURLByteArray(updatesearchresulttable.get(0).getImageURLByteArray());
 		    ModelAndView mav=new ModelAndView("updatesearchresulttableadmin","updatesearchresulttable",updatesearchresulttable.get(0));
 		    ArrayList<ArrayList<String>>list=db.getCategoryAndSubCategoryList(currentUser);
 			Multimap<String, String>categoryMap=db.getCategoryMap();
 			String categoryMapString=categoryMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
 			mav.addObject("categoryMap",categoryMapString);
-			mav.addObject("brandList",list.get(2));
+			
+			ArrayList<String>brandList=new ArrayList<String>(Arrays.asList(itemObject.getBrand().split(",")));
+			ArrayList<String>modelList=new ArrayList<String>(Arrays.asList(itemObject.getModel().split(",")));
+			ArrayList<String>trimList=new ArrayList<String>(Arrays.asList(itemObject.getTrim().split(",")));
+			ArrayList<String>fromYearList=new ArrayList<String>(Arrays.asList(itemObject.getFromYear().split(",")));
+			ArrayList<String>toYearList=new ArrayList<String>(Arrays.asList(itemObject.getToYear().split(",")));
+			mav.addObject("loopCount",brandList.size()-1);
+			mav.addObject("brandList", brandList);
+			mav.addObject("modelList",modelList);
+			mav.addObject("trimList",trimList);
+			mav.addObject("fromYearList",fromYearList);
+			mav.addObject("toYearList",toYearList);
+			mav.addObject("dropdownbrandList",list.get(2));
 			mav.addObject("categoryList",list.get(1));
 			Multimap<String, String>brandMap=db.getBrandMap();
 			String brandMapString=brandMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
@@ -412,6 +455,12 @@ public class BaseController {
 			mav.addObject("selectedbrand",updatesearchresulttable.get(0).getBrand());
 			mav.addObject("selectedCategory",updatesearchresulttable.get(0).getCategoryName());
 			mav.addObject("SearchObject", updatesearchresulttable.get(0));
+			Multimap<String, String>modelMap=db.getmodelMap();
+			String modelMapString=modelMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			mav.addObject("modelMap",modelMapString);
+			ArrayList<String>transponderList=db.getTransponderList();
+			String transponderListString=transponderList.toString().replaceAll("\\[", "'").replaceAll("\\]", "'");
+			mav.addObject("transponderList",transponderListString);
 		return mav;
 		}
 	}
@@ -423,7 +472,7 @@ public class BaseController {
 		try {
 		OutputStream output = response.getOutputStream();
 		
-			output.write(searchResult.getImageURLByteArray());
+			output.write(itemObject.getImageURLByteArray());
 			output.flush();
 			output.close();
 		} catch (IOException e ) {
@@ -436,11 +485,117 @@ public class BaseController {
 		}
 	}
 	@RequestMapping(value="/updateKeyInfoForm")
-	public ModelAndView updateKeyInfoForm(SearchObject updatesearchresulttable)
+	public ModelAndView updateKeyInfoForm(Item item,@RequestParam String result,@RequestParam String buttonName)
 	{
+		
+		ModelAndView modelAndView=null;
+		DB db=new DB();
+	
+		if (buttonName.equals("assignMoreButton"))
+		{
+			ArrayList<String>itemArray=new ArrayList<String>(Arrays.asList(result.split("&&&")));
+			Item item1=new Item();
+			item1.setBrand(itemArray.get(0));
+			item1.setModel(itemArray.get(1));
+			item1.setTrim(itemArray.get(2));
+			item1.setFromYear(itemArray.get(3));
+			item1.setToYear(itemArray.get(4));
+			assignmentList.add(item1);
+			Multimap<String, String>categoryMap=db.getCategoryMap();
+			String categoryMapString=categoryMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView=new ModelAndView("updatesearchresulttableadmin");
+			modelAndView.addObject("updatesearchresulttable",itemObject);
+			ArrayList<String>brandList=new ArrayList<String>(Arrays.asList(itemObject.getBrand().split(",")));
+			ArrayList<String>modelList=new ArrayList<String>(Arrays.asList(itemObject.getModel().split(",")));
+			ArrayList<String>trimList=new ArrayList<String>(Arrays.asList(itemObject.getTrim().split(",")));
+			ArrayList<String>fromYearList=new ArrayList<String>(Arrays.asList(itemObject.getFromYear().split(",")));
+			ArrayList<String>toYearList=new ArrayList<String>(Arrays.asList(itemObject.getToYear().split(",")));
+			for (int i=0;i<assignmentList.size();i++)
+			{
+				brandList.add(assignmentList.get(i).getBrand());
+				modelList.add(assignmentList.get(i).getModel());
+				trimList.add(assignmentList.get(i).getTrim());
+				fromYearList.add(assignmentList.get(i).getFromYear());
+				toYearList.add(assignmentList.get(i).getToYear());
+			}
+			modelAndView.addObject("loopCount",brandList.size());
+			modelAndView.addObject("brandList", brandList);
+			modelAndView.addObject("modelList",modelList);
+			modelAndView.addObject("trimList",trimList);
+			modelAndView.addObject("fromYearList",fromYearList);
+			modelAndView.addObject("toYearList",toYearList);
+			modelAndView.addObject("categoryMap",categoryMapString);
+			Multimap<String, String>brandMap=db.getBrandMap();
+			Multimap<String, String>modelMap=db.getmodelMap();
+			String brandMapString=brandMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView.addObject("brandMap",brandMapString);
+			String modelMapString=modelMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView.addObject("modelMap",modelMapString);
+
+			ArrayList<ArrayList<String>>list=db.getCategoryAndSubCategoryList(currentUser);
+			modelAndView.addObject("dropdownbrandList", list.get(2));
+			modelAndView.addObject("categoryList",list.get(1));
+			ArrayList<String>transponderList=db.getTransponderList();
+			String transponderListString=transponderList.toString().replaceAll("\\[", "'").replaceAll("\\]", "'");
+			modelAndView.addObject("transponderList",transponderListString);
+			
+		}
+		else
+		{
+			ArrayList<String>brandArray=new ArrayList<String>(Arrays.asList(result.split("###")));
+			ArrayList<String>brand=new ArrayList<String>();
+			ArrayList<String>model=new ArrayList<String>();
+			ArrayList<String>trim=new ArrayList<String>();
+			ArrayList<String>fromYear=new ArrayList<String>();
+			ArrayList<String>toYear=new ArrayList<String>();
+			for (int i=0;i<brandArray.size();i++)
+			{
+				if (!(brandArray.get(i).equals("")))
+				{
+					
+					String row=brandArray.get(i).replaceFirst("&&&", "");
+					ArrayList<String>info=new ArrayList<String>(Arrays.asList(row.split("&&&")));
+					if (info.size()>0)
+					{
+						brand.add(info.get(0).trim());
+						model.add(info.get(1).trim());
+						trim.add(info.get(2).trim());
+						fromYear.add(info.get(3).trim());
+						toYear.add(info.get(4).trim());	
+					}
+						
+				}
+				
+				
+			}
+			String brandString=brand.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			String modelString=model.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			String trimString=trim.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			String fromYearString=fromYear.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			String toYearString=toYear.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			item.setBrand(brandString);
+			item.setModel(modelString);
+			item.setTrim(trimString);
+			item.setFromYear(fromYearString);
+			item.setToYear(toYearString);
+			
+			String finalResult=db.updateItem(item,currentUser);
+			assignmentList.clear();
+			modelAndView= new ModelAndView("adminoptions","finalResult",finalResult);
+		}
+		return modelAndView;
+		
+	}
+	
+	
+	@RequestMapping(value="/updateKeyInfoFormEmployee")
+	public ModelAndView updateKeyInfoFormEmployee(Item item)
+	{
+		
 		dB=new DB();
-		String result1=dB.updateItem(updatesearchresulttable,currentUser);
-		return new ModelAndView("employeeoptions");
+		String result=dB.employeeUpdateItem(item,currentUser);
+		return new ModelAndView("result","result",result);
+		
 	}
 	
 	@RequestMapping(value="/addnewitem")
@@ -456,6 +611,9 @@ public class BaseController {
 		mav.addObject("senderInventoryList",list.get(4));
 		mav.addObject("categoryList",list.get(1));
 		Multimap<String, String>brandMap=db.getBrandMap();
+		ArrayList<String>transponderList=db.getTransponderList();
+		String transponderListString=transponderList.toString().replaceAll("\\[", "'").replaceAll("\\]", "'");
+		mav.addObject("transponderList",transponderListString);
 		String brandMapString=brandMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
 		mav.addObject("brandMap",brandMapString);
 		return mav;
@@ -470,7 +628,7 @@ public class BaseController {
 		    	}
 		dB=new DB();
 		String result=dB.addItem(SearchObject,currentUser);
-		return new ModelAndView("result","result",result);
+		return new ModelAndView("resultadmin","result",result);
 		
 	}
 	
@@ -712,7 +870,7 @@ public class BaseController {
 		object.setCategoryName("");
 		object.setDescription("");
 		object.setItemCode("");
-		ArrayList<Item>dataList=db.searchKey(object);
+		ArrayList<Item>dataList=db.searchKey(object,currentUser);
 		if (dataList.size()==0)
 		{
 			return new ModelAndView("result","result","No Result Found");
@@ -742,7 +900,7 @@ public class BaseController {
 		object.setDescription("");
 		object.setItemCode("");
 		DB db=new DB();
-		ArrayList<Item>dataList=db.searchKey(object);
+		ArrayList<Item>dataList=db.searchKey(object,currentUser);
 		if (dataList.size()==0)
 		{
 			return new ModelAndView("result","result","No Result Found");
@@ -768,7 +926,7 @@ public class BaseController {
 		object.setDescription("");
 		object.setItemCode("");
 		DB db=new DB();
-		ArrayList<Item>dataList=db.searchKey(object);
+		ArrayList<Item>dataList=db.searchKey(object,currentUser);
 		return new ModelAndView("searchresulttable","dataList",dataList);
 	   
 	}
@@ -788,7 +946,7 @@ public class BaseController {
 		object.setCategoryName("");
 		object.setItemCode("");
 		DB db=new DB();
-		ArrayList<Item>dataList=db.searchKey(object);
+		ArrayList<Item>dataList=db.searchKey(object,currentUser);
 		if (dataList.size()==0)
 		{
 			return new ModelAndView("result","result","No Result Found");
@@ -807,7 +965,7 @@ public class BaseController {
 		object.setSubCategoryName("");
 		object.setDescription("");
 		DB db=new DB();
-		ArrayList<Item>dataList=db.searchKey(object);
+		ArrayList<Item>dataList=db.searchKey(object,currentUser);
 		if (dataList.size()==0)
 		{
 			return new ModelAndView("result","result","No Result Found");
@@ -835,7 +993,7 @@ public class BaseController {
 		object.setItemCode("");
 		object.setInvName("");
 		DB db=new DB();
-		ArrayList<Item>dataList=db.searchKey(object);
+		ArrayList<Item>dataList=db.searchKey(object,currentUser);
 		if (dataList.size()==0)
 		{
 			return new ModelAndView("result","result","No Result Found");
@@ -1048,6 +1206,82 @@ public class BaseController {
 	
 	
 ////////////////////////////
+	
+	
+	@RequestMapping(value="/addTransponder")
+	public ModelAndView addNewTransponder()
+	{
+		DB db=new DB();
+		ArrayList<String>categoryList=db.getCategoryAndSubCategoryList(currentUser).get(1);
+		Multimap<String, String>categoryMap=db.getCategoryMap();
+		String categoryMapString=categoryMap.toString().replaceAll("=",":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+		ModelAndView modelAndView=new  ModelAndView("addTransponder");
+		modelAndView.addObject("categoryMap",categoryMapString);
+		modelAndView.addObject("categoryList",categoryList);
+	return modelAndView;
+	}
+	@RequestMapping(value="/addNewTransponderform")
+	public ModelAndView addNewTransponderform(Item object)
+	{
+		DB db=new DB();
+		db.addNewTransponderRequest(object,currentUser);
+		return new ModelAndView("adminoptions");
+	}
+	@RequestMapping(value="/searchTransponder")
+	public ModelAndView searchTransponder()
+	{
+		DB db=new DB();
+		ArrayList<String>categoryList=db.getCategoryAndSubCategoryList(currentUser).get(1);
+		Multimap<String, String>categoryMap=db.getCategoryMap();
+		String categoryMapString=categoryMap.toString().replaceAll("=",":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+		ModelAndView modelAndView=new  ModelAndView("searchTransponder");
+		Multimap<String, String>subCategoryMap=db.getSubCategoryMap();
+		String subCategoryMapString=subCategoryMap.toString().replaceAll("=",":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+		modelAndView.addObject("subCategoryMap",subCategoryMapString);
+		modelAndView.addObject("categoryMap",categoryMapString);
+		modelAndView.addObject("categoryList",categoryList);
+	
+		return modelAndView;
+	}
+	@RequestMapping(value="/searchTransponderTable")
+	public ModelAndView searchTransponderTable(Item object)
+	{
+		DB db=new DB();
+		Item item=db.searchTransponderRequest(object);
+		return new ModelAndView("searchTransponderTable","item",item);
+	}
+	@RequestMapping(value="/updateTransponderRequest")
+	public ModelAndView updateTransponderRequest(Item object)
+	{
+		DB db=new DB();
+		db.updateTransponderRequest(object,currentUser);
+		return new ModelAndView("adminoptions");
+	}
+	@RequestMapping(value="/searchDeleteTransponder")
+	public ModelAndView searchDeleteTransponderTable(Item object)
+	{
+		DB db=new DB();
+		ArrayList<String>categoryList=db.getCategoryAndSubCategoryList(currentUser).get(1);
+		Multimap<String, String>categoryMap=db.getCategoryMap();
+		String categoryMapString=categoryMap.toString().replaceAll("=",":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+		ModelAndView modelAndView=new  ModelAndView("searchDeleteTransponder");
+		Multimap<String, String>subCategoryMap=db.getSubCategoryMap();
+		String subCategoryMapString=subCategoryMap.toString().replaceAll("=",":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+		modelAndView.addObject("subCategoryMap",subCategoryMapString);
+		modelAndView.addObject("categoryMap",categoryMapString);
+		modelAndView.addObject("categoryList",categoryList);
+		return modelAndView;
+		
+		
+	}
+	@RequestMapping(value="/searchDeleteTableTranponder")
+	public ModelAndView searchDeleteTableTransponder(Item object)
+	{
+		DB db=new DB();
+		db.deleteTransponderRequest(object,currentUser);
+		return new ModelAndView("adminoptions");
+	}
+	
 	@RequestMapping(value="/addReason")
 	public ModelAndView addNewReason()
 	{
@@ -1610,7 +1844,6 @@ public String printLabel( HttpServletRequest request,
 		ArrayList<Item>itemData=null;
 		try
 		{
-		System.out.println(data);
 		itemData=new ArrayList<Item>();
 		ArrayList<String>itemArray=new ArrayList<String>(Arrays.asList(data.split("###")));
 		
@@ -1652,6 +1885,60 @@ public String printLabel( HttpServletRequest request,
 		return result;
 	
 		}
+	
+	
+	
+
+	@RequestMapping(value="/printLabels")
+	public ModelAndView printLabels()
+	{
+		DB db=new DB();
+		ArrayList<ArrayList<String>>list=db.getCategoryAndSubCategoryList(currentUser);
+		ModelAndView modelAndView=new ModelAndView("printLabelSearch");
+		modelAndView.addObject("senderInventoryList",list.get(4));
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value="/printIndividualLabel")
+	@ResponseBody
+	public String  printIndividualLabel( HttpServletRequest request, 
+            HttpServletResponse response,@RequestParam String data)
+	{
+		
+		ArrayList<String>objectString=new ArrayList<String>(Arrays.asList(data.split("&&&")));
+		Item item=new Item();
+		if (objectString.get(1)==null || objectString.get(1).equals("null"))
+			item.setSku("");
+		else
+		item.setSku(objectString.get(1));
+		item.setItemCode(objectString.get(0));
+		item.setInvName(objectString.get(2));
+		item.setBrand("");
+		item.setCategoryName("");
+		item.setSubCategoryName("");
+		item.setDescription("");
+		String result="";
+		DB db=new DB();
+		ArrayList<Item> itemData=db.searchKey(item,currentUser);
+		if (itemData.size()==0)
+		{
+			result="No Item Found";
+		}
+		else
+		{
+			TestPrint print=new  TestPrint();
+			// get absolute path of the application
+	        ServletContext context = request.getServletContext();
+	        String appPath = context.getRealPath("");
+			result=print.executePrint(itemData,appPath);
+			
+		}
+			return result;
+	
+		}
+	
+	
 	
 	  @RequestMapping(value="/startDownload",method = RequestMethod.GET)
 	    public void doDownload(HttpServletRequest request,
@@ -1855,7 +2142,7 @@ public String printLabel( HttpServletRequest request,
 		ModelAndView modelAndView=null;
 		if (result.getBrand()==null)
 		{
-			modelAndView=new ModelAndView("result");
+			modelAndView=new ModelAndView("resultadmin");
 			modelAndView.addObject("result","No Item Found");
 		}	
 		else
@@ -1869,16 +2156,13 @@ public String printLabel( HttpServletRequest request,
 	}
 	
 	@RequestMapping(value="/itemAssignmentFormRequest")
-	public ModelAndView assignInventoryRequest(Item item, @RequestParam String result)
+	public ModelAndView assignInventoryRequest(Item item)
 	{
 		DB db=new DB();
-		String testString=result.replaceFirst("&&&", "");
-		ArrayList<String>itemArray=new ArrayList<String>(Arrays.asList(testString.split("&&&")));
 		Item item2=new Item();
 		item2=item;
-		item2.setSku(itemArray.get(0));
 		String result1=db.assignInventoryToItem(item2,currentUser);
-		ModelAndView modelAndView=new ModelAndView("result");
+		ModelAndView modelAndView=new ModelAndView("resultadmin");
 		modelAndView.addObject("result",result1);
 		return modelAndView;
 	}
@@ -2023,8 +2307,8 @@ public String printLabel( HttpServletRequest request,
 		ModelAndView modelAndView=null;
 		if (result.getSku()==null)
 		{
-			modelAndView=new ModelAndView("result");
-			modelAndView.addObject("resultadmin","No Item Found");
+			modelAndView=new ModelAndView("resultadmin");
+			modelAndView.addObject("result","No Item Found Or Item has already assigned Brand(s)");
 		}	
 		else
 		{
@@ -2077,6 +2361,7 @@ public String printLabel( HttpServletRequest request,
 		}
 		return modelAndView;
 	
+
 	}
 	/*@RequestMapping(value="/printTransferLabel")
 	public String printTransferLabel(@RequestParam String data,HttpServletRequest request, HttpServletResponse response )
@@ -2094,7 +2379,7 @@ public String printLabel( HttpServletRequest request,
 	{
 		DB db=new DB();
 		ArrayList<Item>unassignedList=db.getUnassignedItems();
-		ModelAndView modelAndView=new ModelAndView("showUnassignedItem");
+		ModelAndView modelAndView=new ModelAndView("showUnassignedItems");
 		modelAndView.addObject("unassignedList",unassignedList);
 			return modelAndView;
 	
@@ -2109,6 +2394,280 @@ public String printLabel( HttpServletRequest request,
 		modelAndView.addObject("unassignedList",unassignedList);
 			return modelAndView;
 	
+	}
+	
+	@RequestMapping(value="/updateUnassignedItem")
+	public ModelAndView updateUnassignedItem(Item item)
+	{
+		DB db=new DB();
+		ModelAndView modelAndView=new ModelAndView("updateModelTrimSearch");
+		String skuList=db.getSkuListJSArray();
+		modelAndView.addObject("skuList",skuList);
+		return modelAndView;
+	
+	}
+	
+	
+	@RequestMapping(value="/updateAssignedBrandTrimItem")
+	public ModelAndView updateAssignedBrandTrimItem(Item item)
+	{
+		DB db=new DB();
+		ModelAndView modelAndView=new ModelAndView("updateBrandTrimSearch");
+		String skuList=db.getSkuListJSArray();
+		modelAndView.addObject("skuList",skuList);
+		return modelAndView;
+	
+	}
+	
+	@RequestMapping(value="/updateAssignedBrandTrimItemSearchRequest")
+	public ModelAndView updateAssignedBrandTrimItemSearchRequest(Item item)
+	{
+		DB db=new DB();
+		Item assignedBrandTrimItem=db.getBrandTrimDetials(item);
+		
+		ModelAndView modelAndView=null;
+		if (assignedBrandTrimItem.getSku()==null)
+		{
+			modelAndView=new ModelAndView("resultadmin","result","No Item Found");
+		}
+		else
+		{
+			unassignedItem1=new Item();unassignedItem1=assignedBrandTrimItem;
+			unassignedItem1.setImageURLByteArray(assignedBrandTrimItem.getImageURLByteArray());
+			ArrayList<ArrayList<String>>list=db.getCategoryAndSubCategoryList(currentUser);
+			Multimap<String, String>categoryMap=db.getCategoryMap();
+			String categoryMapString=categoryMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView=new ModelAndView("updateAssignedBrandTrimItem");
+			modelAndView.addObject("unassignedItem",assignedBrandTrimItem);
+			modelAndView.addObject("loopCount",new ArrayList<String>(Arrays.asList(assignedBrandTrimItem.getBrand().split(","))).size());
+			modelAndView.addObject("brandList", new ArrayList<String>(Arrays.asList(assignedBrandTrimItem.getBrand().split(","))));
+			modelAndView.addObject("modelList",new ArrayList<String>(Arrays.asList(assignedBrandTrimItem.getModel().split(","))));
+			modelAndView.addObject("trimList",new ArrayList<String>(Arrays.asList(assignedBrandTrimItem.getTrim().split(","))));
+			modelAndView.addObject("fromYearList",new ArrayList<String>(Arrays.asList(assignedBrandTrimItem.getFromYear().split(","))));
+			modelAndView.addObject("toYearList",new ArrayList<String>(Arrays.asList(assignedBrandTrimItem.getToYear().split(","))));
+			modelAndView.addObject("categoryMap",categoryMapString);
+			Multimap<String, String>brandMap=db.getBrandMap();
+			Multimap<String, String>modelMap=db.getmodelMap();
+			String brandMapString=brandMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView.addObject("brandMap",brandMapString);
+			String modelMapString=modelMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView.addObject("modelMap",modelMapString);
+			modelAndView.addObject("dropdownbrandList", list.get(2));
+			modelAndView.addObject("categoryList",list.get(1));
+			ArrayList<String>transponderList=db.getTransponderList();
+			String transponderListString=transponderList.toString().replaceAll("\\[", "'").replaceAll("\\]", "'");
+			modelAndView.addObject("transponderList",transponderListString);
+		}
+				return modelAndView;
+	
+	}
+	
+	
+	
+	@RequestMapping(value="/updateAssignedBrandTrimItemRequest")
+	public ModelAndView updateAssignedBrandTrimItemRequest(Item item,@RequestParam String result,@RequestParam String buttonName)
+	{
+		
+		ModelAndView modelAndView=null;
+		DB db=new DB();
+	
+		if (buttonName.equals("assignMoreButton"))
+		{
+			ArrayList<String>itemArray=new ArrayList<String>(Arrays.asList(result.split("&&&")));
+			Item item1=new Item();
+			item1.setBrand(itemArray.get(0));
+			item1.setModel(itemArray.get(1));
+			item1.setTrim(itemArray.get(2));
+			item1.setFromYear(itemArray.get(3));
+			item1.setToYear(itemArray.get(4));
+			assignmentList.add(item1);
+			Multimap<String, String>categoryMap=db.getCategoryMap();
+			String categoryMapString=categoryMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView=new ModelAndView("updateAssignedBrandTrimItem");
+			modelAndView.addObject("unassignedItem",unassignedItem1);
+			ArrayList<String>brandList=new ArrayList<String>(Arrays.asList(unassignedItem1.getBrand().split(",")));
+			ArrayList<String>modelList=new ArrayList<String>(Arrays.asList(unassignedItem1.getModel().split(",")));
+			ArrayList<String>trimList=new ArrayList<String>(Arrays.asList(unassignedItem1.getTrim().split(",")));
+			ArrayList<String>fromYearList=new ArrayList<String>(Arrays.asList(unassignedItem1.getFromYear().split(",")));
+			ArrayList<String>toYearList=new ArrayList<String>(Arrays.asList(unassignedItem1.getToYear().split(",")));
+			for (int i=0;i<assignmentList.size();i++)
+			{
+				brandList.add(assignmentList.get(i).getBrand());
+				modelList.add(assignmentList.get(i).getModel());
+				trimList.add(assignmentList.get(i).getTrim());
+				fromYearList.add(assignmentList.get(i).getFromYear());
+				toYearList.add(assignmentList.get(i).getToYear());
+			}
+			modelAndView.addObject("loopCount",brandList.size());
+			modelAndView.addObject("brandList", brandList);
+			modelAndView.addObject("modelList",modelList);
+			modelAndView.addObject("trimList",trimList);
+			modelAndView.addObject("fromYearList",fromYearList);
+			modelAndView.addObject("toYearList",toYearList);
+			modelAndView.addObject("categoryMap",categoryMapString);
+			Multimap<String, String>brandMap=db.getBrandMap();
+			Multimap<String, String>modelMap=db.getmodelMap();
+			String brandMapString=brandMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView.addObject("brandMap",brandMapString);
+			String modelMapString=modelMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView.addObject("modelMap",modelMapString);
+
+			ArrayList<ArrayList<String>>list=db.getCategoryAndSubCategoryList(currentUser);
+			modelAndView.addObject("dropdownbrandList", list.get(2));
+			modelAndView.addObject("categoryList",list.get(1));
+			ArrayList<String>transponderList=db.getTransponderList();
+			String transponderListString=transponderList.toString().replaceAll("\\[", "'").replaceAll("\\]", "'");
+			modelAndView.addObject("transponderList",transponderListString);
+			
+		}
+		else
+		{
+			ArrayList<String>brandArray=new ArrayList<String>(Arrays.asList(result.split("###")));
+			ArrayList<String>brand=new ArrayList<String>();
+			ArrayList<String>model=new ArrayList<String>();
+			ArrayList<String>trim=new ArrayList<String>();
+			ArrayList<String>fromYear=new ArrayList<String>();
+			ArrayList<String>toYear=new ArrayList<String>();
+			for (int i=0;i<brandArray.size();i++)
+			{
+				if (!(brandArray.get(i).equals("")))
+				{
+					String row=brandArray.get(i).replaceFirst("&&&", "");
+					ArrayList<String>info=new ArrayList<String>(Arrays.asList(row.split("&&&")));
+					if (info.size()>0)
+					{
+						brand.add(info.get(0).trim());
+						model.add(info.get(1).trim());
+						trim.add(info.get(2).trim());
+						fromYear.add(info.get(3).trim());
+						toYear.add(info.get(4).trim());	
+					}
+						
+				}
+				
+				
+			}
+			String brandString=brand.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			String modelString=model.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			String trimString=trim.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			String fromYearString=fromYear.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			String toYearString=toYear.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+			item.setBrand(brandString);
+			item.setModel(modelString);
+			item.setTrim(trimString);
+			item.setFromYear(fromYearString);
+			item.setToYear(toYearString);
+			
+			String finalResult=db.updateAssignBrandTrimItem(item,currentUser);
+			assignmentList.clear();
+			modelAndView= new ModelAndView("adminoptions","finalResult",finalResult);
+		}
+		return modelAndView;
+	
+	}
+	@RequestMapping(value="/updateUnassignedItemSearchRequest")
+	public ModelAndView updateUnassignedItemSearchRequest(Item item)
+	{
+		DB db=new DB();
+		Item unassignedItem=db.getUnassignedItem(item);
+		ModelAndView modelAndView=null;
+		if (unassignedItem.getSku()==null)
+		{
+			modelAndView=new ModelAndView("resultadmin","result","No Item Found");
+		}
+		else
+		{
+			unassignedItem1=new Item();
+			unassignedItem1.setImageURLByteArray(unassignedItem.getImageURLByteArray());
+			Multimap<String, String>categoryMap=db.getCategoryMap();
+			String categoryMapString=categoryMap.toString().replaceAll("=", ":").replaceAll("\\[", "\\['").replaceAll("\\]", "'\\]");
+			modelAndView=new ModelAndView("updateUnassignedItem");
+			modelAndView.addObject("unassignedItem",unassignedItem);
+			modelAndView.addObject("categoryMap",categoryMapString);
+			ArrayList<ArrayList<String>>list=db.getCategoryAndSubCategoryList(currentUser);
+			modelAndView.addObject("categoryList",list.get(1));
+			ArrayList<String>transponderList=db.getTransponderList();
+			String transponderListString=transponderList.toString().replaceAll("\\[", "'").replaceAll("\\]", "'");
+			modelAndView.addObject("transponderList",transponderListString);
+		}
+				return modelAndView;
+	
+	}
+	
+	
+	@RequestMapping(value="/updateUnassignedItemRequest")
+	public ModelAndView updateUnassignedItemRequest(Item item)
+	{
+		DB db=new DB();
+		String result1=db.updateUnassignedItem(item,currentUser);
+		ModelAndView modelAndView=new ModelAndView("resultadmin");
+		modelAndView.addObject("result",result1);
+			return modelAndView;
+	
+	}
+	
+	private Item unassignedItem1;
+	
+	@RequestMapping(value="/updateimageServletUnassignedItem")
+	public void updateimageServletUnassignedItem(HttpServletRequest request, HttpServletResponse response)
+	{
+		 response.setHeader("expires", "0");
+		response.setContentType("image/jpg");
+		try {
+		OutputStream output = response.getOutputStream();
+		
+			output.write(unassignedItem1.getImageURLByteArray());
+			output.flush();
+			output.close();
+		} catch (IOException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (NullPointerException e ) {
+			// TODO Auto-generated catch block
+			System.out.println("No Image Found1");
+		}
+	}
+	
+	
+	@RequestMapping(value="/changeLocationSearch")
+	public ModelAndView changeLocationSearch()
+	{
+		DB db=new DB();
+		ArrayList<String>senderInventoryList=db.getCategoryAndSubCategoryList(currentUser).get(4);
+		ModelAndView modelAndView=new ModelAndView("changeLocationSearch","senderInventoryList",senderInventoryList);
+		
+			return modelAndView;
+	
+	}
+	
+	
+	@RequestMapping(value="/changeLocationSearchRequest")
+	public ModelAndView changeLocationSearchRequest(Item object)
+	{
+		DB db=new DB();
+		
+		object.setSubCategoryName("");
+		object.setBrand("");
+		object.setCategoryName("");
+		object.setSubCategoryName("");
+		object.setDescription("");
+		ArrayList<String>data=db.changeLocationSearch(object);
+		if (data.size()==0)
+		{
+			return new ModelAndView("resultadmin","result","No Result Found");
+		}
+		else
+			return new ModelAndView("changeLocationSearchTable","data",data);
+	}
+	
+	
+	@RequestMapping(value="/changeLocationRequest")
+	public ModelAndView changeLocationRequest(Item object)
+	{
+		DB db=new DB();
+	String result=db.changeLocationrequest(object);
+	return new ModelAndView("resultadmin","result",result);	
 	}
 	
 }

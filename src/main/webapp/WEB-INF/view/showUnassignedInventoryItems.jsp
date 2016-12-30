@@ -11,7 +11,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="ca" %>
 <body>
 <%   int counter=0; %>
-<jsp:include page="employeeoptions.jsp" />
+<jsp:include page="adminoptions.jsp" />
 <ca:form id="itemAssignmentForm" name="itemAssignmentForm" action="itemAssignmentFormRequest"  modelAttribute = "Item">
 <input type="hidden" name="result" id="result" value="${result}" />
 

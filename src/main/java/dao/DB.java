@@ -103,10 +103,10 @@ public class DB {
 		
 	}
 	
-	public boolean decrementItemNumber(String conditionLoop,Key k,String currentUser)
+	public String decrementItemNumber(String conditionLoop,Key k,String currentUser)
 	{
 		String activeInventory="";
-		boolean result=false;
+		String result="Operation Failed";
 		if (k.getInvCode().equals(""))
 		{
 			if  (!(k.getItemCodePart1().equals("")))
@@ -131,6 +131,7 @@ public class DB {
 			 activeInventory=k.getInvCode();
 			
 		}
+		k.setInvCode(activeInventory);
 		ArrayList<String>itemCodeList=new ArrayList<String>();
 		itemCodeList.add(k.getItemCodePart1());
 		itemCodeList.add(k.getItemCodePart2());
@@ -141,6 +142,97 @@ public class DB {
 		ArrayList<String>subCategoryList=new ArrayList<String>();
 		ArrayList<String>brandList=new ArrayList<String>();
 		ArrayList<String>modelList=new ArrayList<String>();
+		ArrayList<String>transponderList=new ArrayList<String>();
+		ArrayList<String>fromYearList=new ArrayList<String>();
+		ArrayList<String>toYearList=new ArrayList<String>();
+		ArrayList<String>trimList=new ArrayList<String>();
+		if (k.getTrimPart1() ==null)
+			trimList.add("");
+			else
+				trimList.add(k.getTrimPart1());	
+			if (k.getTrimPart2() ==null)
+				trimList.add("");
+				else
+					trimList.add(k.getTrimPart2());	
+			if (k.getTrimPart3() ==null)
+				trimList.add("");
+				else
+					trimList.add(k.getTrimPart3());	
+			if (k.getTrimPart4() ==null)
+				trimList.add("");
+				else
+					trimList.add(k.getTrimPart4());	
+			if (k.getTrimPart5() ==null)
+				trimList.add("");
+				else
+					trimList.add(k.getTrimPart5());	
+			
+			
+			if (k.getTransponderPart1() ==null)
+				transponderList.add("");
+				else
+					transponderList.add(k.getTransponderPart1());	
+				if (k.getTransponderPart2() ==null)
+					transponderList.add("");
+					else
+						transponderList.add(k.getTransponderPart2());	
+				if (k.getTransponderPart3() ==null)
+					transponderList.add("");
+					else
+						transponderList.add(k.getTransponderPart3());	
+				if (k.getTransponderPart4() ==null)
+					transponderList.add("");
+					else
+						transponderList.add(k.getTransponderPart4());	
+				if (k.getTransponderPart5() ==null)
+					transponderList.add("");
+					else
+						transponderList.add(k.getTransponderPart5());	
+				
+				
+				if (k.getFromYearPart1() ==null)
+					fromYearList.add("");
+					else
+						fromYearList.add(k.getFromYearPart1());	
+					if (k.getFromYearPart2() ==null)
+						fromYearList.add("");
+						else
+							fromYearList.add(k.getFromYearPart2());	
+					if (k.getFromYearPart3() ==null)
+						fromYearList.add("");
+						else
+							fromYearList.add(k.getFromYearPart3());	
+					if (k.getFromYearPart4() ==null)
+						fromYearList.add("");
+						else
+							fromYearList.add(k.getFromYearPart4());	
+					if (k.getFromYearPart5() ==null)
+						fromYearList.add("");
+						else
+							fromYearList.add(k.getFromYearPart5());	
+					
+				
+					if (k.getToYearPart1() ==null)
+						toYearList.add("");
+						else
+					toYearList.add(k.getToYearPart1());	
+						if (k.getToYearPart2() ==null)
+							toYearList.add("");
+							else
+								toYearList.add(k.getToYearPart2());	
+						if (k.getToYearPart3() ==null)
+							toYearList.add("");
+							else
+								toYearList.add(k.getToYearPart3());	
+						if (k.getToYearPart4() ==null)
+							toYearList.add("");
+							else
+								toYearList.add(k.getToYearPart4());	
+						if (k.getToYearPart5() ==null)
+							toYearList.add("");
+							else
+								toYearList.add(k.getToYearPart5());	
+					
 		if (k.getCategoryNamePart1() ==null)
 		categoryList.add("");
 		else
@@ -227,7 +319,7 @@ public class DB {
 							modelList.add(k.getModelPart5());
 		Random rand=new Random();		
 		int generationID=rand.nextInt(1000000)+1;
-		for (int i=0;i<itemCodeList.size();i++)
+		for (int i=0;i<Integer.valueOf(conditionLoop);i++)
 		{
 			LogObject object=new LogObject();
 			if (!(itemCodeList.get(i).equals("")))
@@ -236,15 +328,16 @@ public class DB {
 				     Class.forName("com.mysql.jdbc.Driver").newInstance();
 				     Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
 				     Statement stmt = con.createStatement();
-				    String query = "update inventory set noOfItems= GREATEST(0, noOfItems - 1) where itemCode='"+itemCodeList.get(i)+"' and invName='"+activeInventory+"';";
+				     String query = "update inventory set noOfItems= GREATEST(0, noOfItems - 1) where itemCode='"+itemCodeList.get(i)+"' and invName='"+activeInventory+"';";
 					     stmt.executeUpdate(query);
 					     stmt.close();
-						 
-						 result=true;
+					     result="Operation Complete";
 						 object.setKeyGenerationID(String.valueOf(generationID));
 						 object.setPart1(itemCodeList.get(i));
 						 object.setInvFrom(activeInventory);
 						 object.setItemCode(itemCodeList.get(i));
+						
+				        
 						 takeLog(currentUser, "New Key", object);		 
 						 con.close();
 				     }
@@ -261,11 +354,11 @@ public class DB {
 				     Class.forName("com.mysql.jdbc.Driver").newInstance();
 				     Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
 				     Statement stmt = con.createStatement();
-				     String query = "update inventory set noOfItems= GREATEST(0, noOfItems - 1) where category='"+categoryList.get(i)+"' and subcategory='"+subCategoryList.get(i)+"' and brand='"+brandList.get(i)+"' and model='"+modelList.get(i)+"' and invName='"+activeInventory+"';";
+				     String query = "update inventory set noOfItems= GREATEST(0, noOfItems - 1) where category='"+categoryList.get(i)+"' and subcategory='"+subCategoryList.get(i)+"' and brand like '%"+brandList.get(i)+"%' and model like '%"+modelList.get(i).trim()+"%' and invName='"+activeInventory+"' and trim like '%"+trimList.get(i).trim()+"%' and  transponder='"+transponderList.get(i)+"' and  fromYear like '%"+fromYearList.get(i)+"%' and  toYear like '%"+toYearList.get(i)+"%';";
 				     stmt.executeUpdate(query);
 				     stmt.close();
-					result=true;
-					 String query2="select itemCode from inventory where category='"+categoryList.get(i)+"' and subcategory='"+subCategoryList.get(i)+"' and brand='"+brandList.get(i)+"' and model='"+modelList.get(i)+"' and invName='"+activeInventory+"';";
+				     result="Operation Complete";
+					 String query2="select itemCode, from inventory where category='"+categoryList.get(i)+"' and subcategory='"+subCategoryList.get(i)+"' and brand like '%"+brandList.get(i)+"%' and model like '%"+modelList.get(i)+"%' and invName='"+activeInventory+"' and trim like '%"+trimList.get(i).trim()+"%' and  transponder='"+transponderList.get(i)+"' and  fromYear like '%"+fromYearList.get(i)+"%' and  toYear like '%"+toYearList.get(i)+"%';";
 					 PreparedStatement preparedStatement = con.prepareStatement(query2);	
 				     ResultSet rs = preparedStatement.executeQuery();
 			         String itemCode="";
@@ -273,6 +366,9 @@ public class DB {
 			         {
 			        	itemCode=rs.getString(1); 
 			         }
+				     
+				     
+				    
 			         stmt.close();
 					 con.close();
 					 object.setKeyGenerationID(String.valueOf(generationID));
@@ -293,8 +389,6 @@ public class DB {
 		}
 	
 		return result; 
-		
-		
 	}
 	
 	public String getInventoryName(String code)
@@ -368,11 +462,11 @@ public class DB {
 		return invCode;
 		
 	}
-	public ArrayList<Item> searchKey(Item i)
+	public ArrayList<Item> searchKey(Item i,String currentUser)
 	{
 		String itemCode="";
 		
-		 ArrayList<String> accessList=getCategoryAndSubCategoryList("sahil").get(4);
+		 ArrayList<String> accessList=getCategoryAndSubCategoryList(currentUser).get(4);
 		 
 		 for (int j=0;j<accessList.size();j++)
 		 {
@@ -394,7 +488,7 @@ public class DB {
 		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
 		     String query="";
 		     if (!(i.getBrand().equals(""))) 
-		     query = "select * from inventory where brand like'%"+i.getBrand()+"%' and model like '%"+i.getModel()+"%' and invName="+accessListString+";";
+		     query = "select * from inventory where brand like'%"+i.getBrand()+"%' and model like '%"+i.getModel().trim()+"%' and invName="+accessListString+";";
 		     else if (!(i.getCategoryName().equals(""))) 
 			     query = "select * from inventory where category='"+i.getCategoryName()+"' and invName="+accessListString+";";
 		     else if (!(i.getSubCategoryName().equals(""))) 
@@ -413,6 +507,7 @@ public class DB {
 			     query = "select * from inventory where description like '%"+i.getDescription()+"%'  and invName="+accessListString+";";
 		     else if (!(i.getItemCode().equals(""))) 
 			     query = "select * from inventory where itemCode = '"+itemCode+"'  and invName="+accessListString+";";
+		     System.out.println(query);
 		     PreparedStatement preparedStatement = con.prepareStatement(query);	
 		     ResultSet rs = preparedStatement.executeQuery();
 		     Blob blob = null;
@@ -455,7 +550,10 @@ public class DB {
 		    	 item.setShelf(positionArray.get(1));
 		    	 item.setSku(rs.getString("sku"));
 		    	 item.setTrim(rs.getString("trim"));
+		    	 item.setFromYear(rs.getString("fromYear"));
+		    	 item.setToYear(rs.getString("toYear"));
 		    	 item.setSubCategoryName(rs.getString("subcategory"));
+		    	 item.setTransponder(rs.getString("transponder"));
 		    	 result.add(item);
 		    	 }
 		      con.close();
@@ -498,8 +596,101 @@ public class DB {
 		
 	}
 	
-	public String updateItem(SearchObject object,String currentUser)
+	
+	public String employeeUpdateItem(Item object,String currentUser)
 	{
+		String result="Update Failed";
+		
+	
+		
+		try{
+		     Class.forName("com.mysql.jdbc.Driver").newInstance();
+		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     
+			PreparedStatement pst2 = null ;
+	    	 pst2 = con.prepareStatement("update inventory set  noOfItems='"+object.getNoOfItems()+"' where sku='"+object.getSku()+"' and invName='"+object.getInvName()+"';"); 
+		    	 
+	    
+		     
+		     pst2.executeUpdate();
+		     LogObject logObject=new LogObject();
+		     logObject.setBrand(object.getBrand());
+		     logObject.setCategory(object.getCategoryName());
+		     logObject.setSubCategory(object.getSubCategoryName());
+		     logObject.setSku(object.getSku());
+		     logObject.setNumber(object.getNoOfItems());
+		     logObject.setInvFrom(object.getInvName());
+		     logObject.setModel(object.getModel());
+		     takeLog(currentUser, "Update", logObject);
+		     con.close();
+		     result="Update Complete";
+			}
+		  catch(Exception e)
+		  {
+			  result=result+"<br>"+e.getMessage();
+			 e.printStackTrace();
+		  }
+		
+		
+		
+		return result;
+		
+		
+	}
+	
+	
+	
+	public String newKeyInvAssign(Key k,String currentUser)
+	{
+		String result="Operation Failed";
+		
+		
+		try{
+		     Class.forName("com.mysql.jdbc.Driver").newInstance();
+		     Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     
+			 
+			
+					if (!(k.getItemCodePart1().equals("")))
+					{
+							 PreparedStatement pst2 = null ;
+					    	 pst2 = con.prepareStatement("update inventory set  noOfItems=noOfItems + 1  where itemCode='"+k.getItemCodePart1()+"';"); 
+					    	 pst2.executeUpdate();	 
+					}
+					else
+					{
+						String invCode=getInventoryCode(k.getInvCode());
+						String rack=k.getRack();
+						String shelf=k.getShelf();
+						String column=k.getColumn();
+						String compartment=k.getCompartment();
+						String itemCode= invCode+rack+shelf+column+compartment;
+						 PreparedStatement pst2 = null ;
+				    	 pst2 = con.prepareStatement("update inventory set  noOfItems=noOfItems + 1  where itemCode='"+itemCode+"';"); 
+				    	 pst2.executeUpdate();
+						
+					}
+				
+			 
+			 con.close();
+		     result="Operation Complete";
+			}
+		  catch(Exception e)
+		  {
+			  result=result+"<br>"+e.getMessage();
+			 e.printStackTrace();
+		  }
+		
+		
+		
+		return result;
+		
+		
+		
+	}
+	public String updateItem(Item object,String currentUser)
+	{
+		String result="Update Failed";
 		InputStream inputStream=null;
 		InputStream exisitingImageInputStream=null;
 		try {
@@ -518,14 +709,11 @@ public class DB {
 		      String query = "select imageURL,cycleCount,cycleCountDate from inventory where sku='"+object.getSku()+"' and invName='"+object.getInvName()+"';";
 			  PreparedStatement preparedStatement = con.prepareStatement(query);	
 			  ResultSet rs = preparedStatement.executeQuery();
-			  String cycleCount="";
-			  String cycleCountDate="";
+			  
 		      Blob blob = null;
 		      while (rs.next())
 			     {
 			    	 blob=rs.getBlob("imageURL");
-			    	 cycleCount=rs.getString("cycleCount");
-			    	 cycleCountDate=rs.getString("cycleCountDate");
 			    	 try
 				     {
 			    		 exisitingImageInputStream= blob.getBinaryStream(1, (int) blob.length());
@@ -535,22 +723,17 @@ public class DB {
 				    	 System.out.println("No Image");
 				     }
 			     }
-				
-		     String query2="delete from inventory where sku='"+object.getSku()+"' and invName='"+object.getInvName()+"';";
-		     PreparedStatement pst = con.prepareStatement(query2);
-		     pst.executeUpdate(query2);
-	    	 PreparedStatement pst2 = null ;
-		     if (object.getImageURL()==null)
+			PreparedStatement pst2 = null ;
+	    	 pst2 = con.prepareStatement("update inventory set brand='"+object.getBrand()+"' , model='"+object.getModel()+"' , trim='"+object.getTrim()+"' , fromYear='"+object.getFromYear()+"' , toYear='"+object.getToYear()+"' , sku='"+object.getSku()+"' , emergencyKey='"+object.getEmergencyKey()+"' , batteryPartNumber='"+object.getBatteryPartNumber()+"' ,  description='"+object.getDescription()+"' ,  fccid='"+object.getFfcId()+"' , ic='"+object.getiC()+"' , category='"+object.getCategoryName()+"' , subcategory='"+object.getSubCategoryName()+"' , productnotes='"+object.getProductNotes()+"' , noOfBUttons='"+object.getNoOfButton()+"' "
+		    	 		+ "			, buttonConfiguration='"+object.getButtonConfiguration()+"' , transponder='"+object.getTransponder()+"' , imageURL=? where sku='"+object.getSku()+"' and invName='"+object.getInvName()+"';"); 
+		    	 
+	    	 if (object.getImageURL().getSize()==0)
 				{
 		    	
-		    	 pst2 = con.prepareStatement("insert into inventory values(null,'"+object.getSku()+"','"+object.getInvName()+"','"+object.getBrand()+"','"+object.getItemCode()+"','"+object.getNoOfItems()+"',?,'"+object.getCategoryName()+"','"+object.getSubCategoryName()+"','"+object.getDescription()+
-	    		 			"','"+object.getFfcId()+"','"+object.getiC()+"','"+object.getNoOfButton()+"','"+object.getButtonConfiguration()+"','"+object.getEmergencyKey()+"','"+object.getBatteryPartNumber()+"','"+object.getProductNotes()+"','"+object.getRestockLimit()+"','"+cycleCount+"','"+cycleCountDate+"','"+object.getModel()+"','"+object.getTrim()+"','"+object.getFromYear()+"','"+object.getToYear()+"',null);");
 		    	  pst2.setBinaryStream(1,exisitingImageInputStream,exisitingImageInputStream.available());
 				}
 		     else
 		     {
-		    	  pst2 = con.prepareStatement("insert into inventory values(null,'"+object.getSku()+"','"+object.getInvName()+"','"+object.getBrand()+"','"+object.getItemCode()+"','"+object.getNoOfItems()+"',?,'"+object.getCategoryName()+"','"+object.getSubCategoryName()+"','"+object.getDescription()+
-	    		 			"','"+object.getFfcId()+"','"+object.getiC()+"','"+object.getNoOfButton()+"','"+object.getButtonConfiguration()+"','"+object.getEmergencyKey()+"','"+object.getBatteryPartNumber()+"','"+object.getProductNotes()+"','"+object.getRestockLimit()+"','"+cycleCount+"','"+cycleCountDate+"','"+object.getModel()+"','"+object.getTrim()+"','"+object.getFromYear()+"','"+object.getToYear()+"',null);");
 		    	  pst2.setBinaryStream(1,inputStream,inputStream.available());
 		     }
 		      
@@ -566,15 +749,17 @@ public class DB {
 		     logObject.setModel(object.getModel());
 		     takeLog(currentUser, "Update", logObject);
 		     con.close();
+		     result="Update Complete";
 			}
 		  catch(Exception e)
 		  {
+			  result=result+"<br>"+e.getMessage();
 			 e.printStackTrace();
 		  }
 		
 		
 		
-		return null;
+		return result;
 		
 		
 		
@@ -611,7 +796,7 @@ public class DB {
 		     Class.forName("com.mysql.jdbc.Driver").newInstance();
 		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
 		     PreparedStatement pst = con.prepareStatement("insert into inventory values(null,'"+searchObject.getSku()+"','"+invName+"','"+searchObject.getBrand()+"','"+itemCode+"','"+searchObject.getNoOfItems()+"',?,'"+searchObject.getCategoryName()+"','"+searchObject.getSubCategoryName()+"','"+searchObject.getDescription()+
-		    		 			"','"+searchObject.getFfcId()+"','"+searchObject.getiC()+"','"+searchObject.getNoOfButton()+"','"+searchObject.getButtonConfiguration()+"','"+searchObject.getEmergencyKey()+"','"+searchObject.getBatteryPartNumber()+"','"+searchObject.getProductNotes()+"','"+searchObject.getRestockLimit()+"','1','"+ft.format(dNow)+"','"+searchObject.getModel()+"','"+searchObject.getTrim()+"','"+searchObject.getFromYear()+"','"+searchObject.getToYear()+"',null);");
+		    		 			"','"+searchObject.getFfcId()+"','"+searchObject.getiC()+"','"+searchObject.getNoOfButton()+"','"+searchObject.getButtonConfiguration()+"','"+searchObject.getEmergencyKey()+"','"+searchObject.getBatteryPartNumber()+"','"+searchObject.getProductNotes()+"','"+searchObject.getRestockLimit()+"','1','"+ft.format(dNow)+"','"+searchObject.getModel()+"','"+searchObject.getTrim()+"','"+searchObject.getFromYear()+"','"+searchObject.getToYear()+"',null,'"+searchObject.getTransponder()+"');");
 		     
 		     pst.setBinaryStream(1,inputStream,inputStream.available());
 		     pst.executeUpdate(); 
@@ -621,7 +806,6 @@ public class DB {
 		     logObject.setCategory(searchObject.getCategoryName());
 		     logObject.setSubCategory(searchObject.getSubCategoryName());
 		     logObject.setSku(searchObject.getSku());
-		     logObject.setNumber(searchObject.getNoOfItems());
 		     logObject.setInvFrom(invName);
 		     logObject.setItemCode(itemCode);
 		     logObject.setModel(searchObject.getModel());
@@ -642,7 +826,7 @@ public class DB {
 	
 	public String assignInventoryToItem(Item item,String currentUser){
 		
-		String result="Item not Added";
+		String result="Inventory not assigned";
 		InputStream exisitingImageInputStream=null;
 		Date dNow = new Date( );
 	     SimpleDateFormat ft = 
@@ -671,11 +855,11 @@ public class DB {
 			    	 item.setModel(rs.getString("model"));
 			    	 item.setNoOfButton(rs.getString("noOfButtons"));
 			    	 item.setProductNotes(rs.getString("productNotes"));
-			    	 item.setRestockLimit(rs.getString("restocklimit"));
 			    	 item.setSubCategoryName(rs.getString("subcategory"));
 			    	 item.setToYear(rs.getString("toYear"));
 			    	 item.setTrim(rs.getString("trim"));
-			    	 item.setNoOfItems(rs.getString("noOfItems"));
+			    	 item.setTransponder(rs.getString("transponder"));
+			    	
 			
 			    	 try
 				     {
@@ -688,11 +872,11 @@ public class DB {
 				     }
 			     }
 		      PreparedStatement pst = con.prepareStatement("insert into inventory values(null,'"+item.getSku()+"','"+invName+"','"+item.getBrand()+"','"+itemCode+"','"+item.getNoOfItems()+"',?,'"+item.getCategoryName()+"','"+item.getSubCategoryName()+"','"+item.getDescription()+
-		    		 			"','"+item.getFfcId()+"','"+item.getiC()+"','"+item.getNoOfButton()+"','"+item.getButtonConfiguration()+"','"+item.getEmergencyKey()+"','"+item.getBatteryPartNumber()+"','"+item.getProductNotes()+"','"+item.getRestockLimit()+"','1','"+ft.format(dNow)+"','"+item.getModel()+"','"+item.getTrim()+"','"+item.getFromYear()+"','"+item.getToYear()+"',null);");
+		    		 			"','"+item.getFfcId()+"','"+item.getiC()+"','"+item.getNoOfButton()+"','"+item.getButtonConfiguration()+"','"+item.getEmergencyKey()+"','"+item.getBatteryPartNumber()+"','"+item.getProductNotes()+"','"+item.getRestockLimit()+"','1','"+ft.format(dNow)+"','"+item.getModel()+"','"+item.getTrim()+"','"+item.getFromYear()+"','"+item.getToYear()+"',null,'"+item.getTransponder()+"');");
 		     
 		     pst.setBinaryStream(1,exisitingImageInputStream,exisitingImageInputStream.available());
 		     pst.executeUpdate(); 
-		     result="New Item Added";
+		     result="Inventory Assigned";
 		     LogObject logObject=new LogObject();
 		     logObject.setBrand(item.getBrand());
 		     logObject.setCategory(item.getCategoryName());
@@ -749,7 +933,7 @@ public Item searchUnassignedItem(Item item){
 			    	 result.setiC(rs2.getString("ic"));
 			    	 result.setBatteryPartNumber(rs2.getString("batteryPartNumber"));
 			    	 result.setNoOfItems(rs2.getString("noOfItems"));
-	            }
+			    	 result.setTransponder(rs2.getString("transponder"));	            }
 		     con.close();
 			}
 		  catch(Exception e)
@@ -780,16 +964,16 @@ public Item searchUnassignedModelTrimItem(Item item){
 		    	 result.setDescription(rs2.getString("description"));
 		    	 result.setNoOfButton(rs2.getString("noOfButtons"));
 		    	 result.setiC(rs2.getString("ic"));
-		    	 result.setBatteryPartNumber("batteryPartNumber");
-				
-            }
-	     con.close();
+		    	 result.setBatteryPartNumber(rs2.getString("batteryPartNumber"));
+		    	 result.setTransponder(rs2.getString("transponder"));	            
+		    	 }
+         con.close();
 		}
 	  catch(Exception e)
 	  {
 		 e.printStackTrace();
 	}
-	System.out.println(result);
+	
 	return result;
 }
 	public boolean changePassword(Login l,String currentUser)
@@ -926,7 +1110,7 @@ public Item searchUnassignedModelTrimItem(Item item){
 			    	 inventoryMap.put(rs.getString("inventoryName"), rs.getString("inventoryCode")) ;
 			    }
 			     result1.add(inventoryMap);
-			  String query2 = "select itemCode,invName,sku from inventory ;";
+			  String query2 = "select itemCode,invName,sku from inventory where brand <> 'null' and itemCode <>  'null'  ;";
 			     PreparedStatement preparedStatement1 = con.prepareStatement(query2);	
 			     ResultSet rs1 = preparedStatement1.executeQuery();
 			     while (rs1.next())
@@ -968,6 +1152,7 @@ public Item searchUnassignedModelTrimItem(Item item){
 			     ResultSet rs = preparedStatement.executeQuery();
 			     while (rs.next())
 			     {
+			    	 if (!(rs.getString("category_name")==null))
 			    	 multimap.put(rs.getString("category_name"), rs.getString("subcategory_name")) ;
 			    }
 		         con.close();
@@ -1037,11 +1222,42 @@ public Item searchUnassignedModelTrimItem(Item item){
 			 e.printStackTrace();
 			
 		  }
-		
 		return multimap;
-		
-		
 	}
+	
+	
+	public Multimap<String, String> getSubCategoryMap()
+	{
+		Multimap<String, String> multimap = ArrayListMultimap.create();
+		try{
+			
+		      Class.forName("com.mysql.jdbc.Driver").newInstance();
+		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		      String query = "select subCategory_name,transponder from category;";
+			     PreparedStatement preparedStatement = con.prepareStatement(query);	
+			     ResultSet rs = preparedStatement.executeQuery();
+			     while (rs.next())
+			     {
+			    	 if (!(rs.getString("subCategory_name")==null || rs.getString("transponder")==null|| rs.getString("subCategory_name").equals("")))
+			    	 {
+			    		
+					    	 multimap.put("'"+rs.getString("subCategory_name").trim()+"'", rs.getString("transponder")) ;	 
+			    	 }
+			    	 
+			    }
+		         con.close();
+				}
+		  catch(Exception e)
+		  {
+			 e.printStackTrace();
+			
+		  }
+		return multimap;
+	}
+	
+	
+	
+	
 	
 	public ArrayList<String> getShipperList()
 	{
@@ -1615,7 +1831,7 @@ public Item searchUnassignedModelTrimItem(Item item){
 		
 		     Class.forName("com.mysql.jdbc.Driver").newInstance();
 		     Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
-		     String query = "insert into category values(null,'"+object.getCategoryName()+"','');"; 
+		     String query = "insert into category values(null,'"+object.getCategoryName()+"','','');"; 
 		     PreparedStatement preparedStatement = con.prepareStatement(query);	
 		     preparedStatement.executeUpdate();
 		     LogObject logObject=new LogObject();
@@ -1629,6 +1845,32 @@ public Item searchUnassignedModelTrimItem(Item item){
 		  }
 		
 	}
+	
+	
+	
+	
+	public void addNewTransponderRequest(Item object,String currentUser)
+	{
+		try{
+		
+		     Class.forName("com.mysql.jdbc.Driver").newInstance();
+		     Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     String query = "insert into category values(null,'"+object.getCategoryName()+"','"+object.getSubCategoryName()+"','"+object.getTransponder()+"');"; 
+		     PreparedStatement preparedStatement = con.prepareStatement(query);	
+		     preparedStatement.executeUpdate();
+		     LogObject logObject=new LogObject();
+	    	 logObject.setCategory(object.getCategoryName());
+		     takeLog(currentUser, "Add Category", logObject);
+		     con.close();
+			}
+		  catch(Exception e)
+		  {
+			 e.printStackTrace();
+		  }
+		
+	}
+	
+	
 	public Item searchCategoryRequest(Item object)
 	{
 		Item result=new Item();
@@ -1653,6 +1895,33 @@ public Item searchUnassignedModelTrimItem(Item item){
 		return result;
 		
 	}
+	
+	
+	public Item searchTransponderRequest(Item object)
+	{
+		Item result=new Item();
+		try{
+		
+		     Class.forName("com.mysql.jdbc.Driver").newInstance();
+		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     String query = "select category_id,transponder from category where transponder='"+object.getTransponder()+"';"; 
+		     PreparedStatement preparedStatement = con.prepareStatement(query);	
+		     ResultSet rs = preparedStatement.executeQuery();
+		     while (rs.next())
+		     {
+		    	result.setItemCode(rs.getString("category_id"));
+		    	result.setTransponder(rs.getString("transponder"));
+		    }
+		    
+			}
+		  catch(Exception e)
+		  {
+			 e.printStackTrace();
+		  }
+		return result;
+		
+	}
+	
 	public void updateCategoryRequest(Item object,String currentUser)
 	{
 		try{
@@ -1685,6 +1954,28 @@ public Item searchUnassignedModelTrimItem(Item item){
 		  }
 		
 	}
+	
+	
+	public void updateTransponderRequest(Item object,String currentUser)
+	{
+		try{
+		
+		     Class.forName("com.mysql.jdbc.Driver").newInstance();
+		     Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     String query2 = "update category set transponder='"+object.getTransponder()+"' where category_id='"+object.getItemCode()+"';";
+		     PreparedStatement preparedStatement2 = con.prepareStatement(query2);	
+		     preparedStatement2.executeUpdate();
+		     LogObject logObject=new LogObject();
+	    	 logObject.setCategory(object.getCategoryName());
+		     takeLog(currentUser, "Update Category", logObject);
+		     con.close();
+			}
+		  catch(Exception e)
+		  {
+			 e.printStackTrace();
+		  }
+		
+	}
 	public void deleteCategoryRequest(Item object,String currentUser)
 	{
 		try{
@@ -1706,6 +1997,27 @@ public Item searchUnassignedModelTrimItem(Item item){
 		
 	}
 	
+	
+	public void deleteTransponderRequest(Item object,String currentUser)
+	{
+		try{
+		
+		     Class.forName("com.mysql.jdbc.Driver").newInstance();
+		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     String query = "delete from category where transponder='"+object.getTransponder()+"' "; 
+		     PreparedStatement preparedStatement = con.prepareStatement(query);	
+		     LogObject logObject=new LogObject();
+	    	 logObject.setCategory(object.getCategoryName());
+		     takeLog(currentUser, "Remove Category", logObject);
+		     preparedStatement.executeUpdate();
+		     con.close();
+			}
+		  catch(Exception e)
+		  {
+			 e.printStackTrace();
+		  }
+		
+	}
 	//////
 	
 	public void addNewReasonRequest(Item object,String currentUser)
@@ -1741,6 +2053,34 @@ public Item searchUnassignedModelTrimItem(Item item){
 		     while (rs.next())
 		     {
 		    	result.setReason(rs.getString("reasonName"));
+		    
+		    }
+		    
+			}
+		  catch(Exception e)
+		  {
+			 e.printStackTrace();
+		  }
+		return result;
+		
+	}
+	
+	
+	public ArrayList<String> getTransponderList()
+	{
+		ArrayList<String> result=new ArrayList<String>();
+		try{
+		
+		     Class.forName("com.mysql.jdbc.Driver").newInstance();
+		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     String query = "select transponder from category ;"; 
+		     PreparedStatement preparedStatement = con.prepareStatement(query);	
+		     ResultSet rs = preparedStatement.executeQuery();
+		     while (rs.next())
+		     {
+		    	 if (!(rs.getString("transponder")==null))
+		    	 if (!(rs.getString("transponder").equals("") || rs.getString("transponder").equals("null")))
+		    		 result.add(rs.getString("transponder"));
 		    
 		    }
 		    
@@ -1801,7 +2141,7 @@ public Item searchUnassignedModelTrimItem(Item item){
 		
 		     Class.forName("com.mysql.jdbc.Driver").newInstance();
 		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
-		     String query = "insert into category values(null,'"+object.getCategoryName()+"','"+object.getSubCategoryName()+"');"; 
+		     String query = "insert into category values(null,'"+object.getCategoryName()+"','"+object.getSubCategoryName()+"','');"; 
 		    
 		     PreparedStatement preparedStatement = con.prepareStatement(query);	
 		     LogObject logObject=new LogObject();
@@ -1869,8 +2209,8 @@ public Item searchUnassignedModelTrimItem(Item item){
 		try{
 		
 		     Class.forName("com.mysql.jdbc.Driver").newInstance();
-		      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
-		     String query = "delete from category where subCategory_name='"+object.getSubCategoryName()+"' and category_name='"+object.getCategoryName().trim()+"' "; 
+		     Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     String query = "delete from category where subCategory_name='"+object.getSubCategoryName().trim()+"' and category_name='"+object.getCategoryName().trim()+"' "; 
 		     PreparedStatement preparedStatement = con.prepareStatement(query);	
 		     preparedStatement.executeUpdate();
 		     LogObject logObject=new LogObject();
@@ -3298,6 +3638,31 @@ public Item searchUnassignedModelTrimItem(Item item){
 		  }
 		return logObject;
 	}
+	
+	
+	public String changeLocationrequest(Item object)
+	{
+		
+		
+		String result="Location Change Failed";
+		try{
+			String newitemCode=getInventoryCode(object.getInvName())+object.getRack()+object.getShelf()+object.getColumn()+object.getCompartment();
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		     Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+		     String query2="update inventory set itemCode ='"+newitemCode+"' where invName='"+object.getInvName()+"' and sku='"+object.getSku()+"'";
+		     System.out.println(query2);
+			 PreparedStatement pst = con.prepareStatement(query2);
+		     pst.executeUpdate(query2);
+		     result="Location Change Complete";
+				}
+		  catch(Exception e)
+		  {
+			  result=result+"<br>"+e.getMessage();
+			 e.printStackTrace();
+			
+		  }
+		return result;
+	}
 
 
 
@@ -3326,6 +3691,8 @@ public ArrayList<Item> getUnassignedItems()
 		    	 result.setNoOfButton(rs2.getString("noOfButtons"));
 		    	 result.setiC(rs2.getString("ic"));
 		    	 result.setBatteryPartNumber("batteryPartNumber");
+		    	 result.setButtonConfiguration(rs2.getString("buttonConfiguration"));
+		    	 result.setTransponder(rs2.getString("transponder"));
 		    	 result1.add(result);
 		     
 		     }
@@ -3382,4 +3749,425 @@ public ArrayList<Item> getUnassignedInventoryItems()
 	  }
 	return result1;
 }
+
+
+public Item getAssignedBrandTrimItem(Item item)
+{
+	
+	
+	Item result=new Item ();
+	
+	try{
+		
+	      Class.forName("com.mysql.jdbc.Driver").newInstance();
+	      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+	      String query =""; 
+	      query = "select * from inventory where itemCode='null' and sku='"+item.getSku()+"';";
+	       PreparedStatement preparedStatement = con.prepareStatement(query);	
+		     ResultSet rs2 = preparedStatement.executeQuery();
+		     while (rs2.next())
+		     {
+		    	
+		    	 result.setCategoryName(rs2.getString("category"));
+		    	 result.setSubCategoryName(rs2.getString("subCategory"));
+		    	 result.setBrand(rs2.getString("brand"));
+		    	 result.setModel(rs2.getString("model"));
+		    	 result.setTrim(rs2.getString("trim"));
+		    	 result.setFromYear(rs2.getString("fromYear"));
+		    	 result.setToYear(rs2.getString("toYear"));;
+		    	 result.setNoOfItems(rs2.getString("noOfItems"));
+		    	 result.setSku(rs2.getString("sku"));
+		    	 result.setDescription(rs2.getString("description"));
+		    	 result.setNoOfButton(rs2.getString("noOfButtons"));
+		    	 result.setiC(rs2.getString("ic"));
+		    	 result.setBatteryPartNumber("batteryPartNumber");
+		    	
+		     
+		     }
+		    con.close();
+			}
+	  catch(Exception e)
+	  {
+		 e.printStackTrace();
+		
+	  }
+	return result;
+}
+public Item getUnassignedItem(Item item)
+{
+	Item result=new Item();
+	
+	try{
+		
+	      Class.forName("com.mysql.jdbc.Driver").newInstance();
+	      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+	      String query =""; 
+	      query = "select * from inventory where sku ='"+item.getSku()+"' and itemCode='null' and brand='null';";
+	      
+	       PreparedStatement preparedStatement = con.prepareStatement(query);	
+		     ResultSet rs2 = preparedStatement.executeQuery();
+		     Blob blob=null;
+		     while (rs2.next())
+		     {
+		    	 result.setCategoryName(rs2.getString("category"));
+		    	 result.setSubCategoryName(rs2.getString("subCategory"));
+		    	 result.setSku(rs2.getString("sku"));
+		    	 result.setDescription(rs2.getString("description"));
+		    	 result.setNoOfButton(rs2.getString("noOfButtons"));
+		    	 result.setiC(rs2.getString("ic"));
+		    	 result.setBatteryPartNumber(rs2.getString("batteryPartNumber"));
+		    	 result.setFfcId(rs2.getString("fccid"));
+		    	 result.setEmergencyKey(rs2.getString("emergencyKey"));
+		    	 result.setButtonConfiguration(rs2.getString("buttonConfiguration"));
+		    	 result.setProductNotes(rs2.getString("productNotes"));
+		    	 result.setBatteryPartNumber(rs2.getString("batteryPartNumber"));
+		    	 result.setTransponder(rs2.getString("transponder"));
+		    	 blob=rs2.getBlob("imageURL");
+		    	 byte[] imgData=null;
+			     try
+			     {
+			    	 imgData = blob.getBytes(1, (int) blob.length());
+			     }
+			     catch(NullPointerException e)
+			     {
+			    	 System.out.println("No Image");
+			     }
+			     result.setImageURLByteArray(imgData);
+		     }
+		    con.close();
+			}
+	  catch(Exception e)
+	  {
+		 e.printStackTrace();
+		
+	  }
+	return result;
+}
+
+
+public Item getBrandTrimDetials(Item item)
+{
+	Item result=new Item();
+	
+	try{
+		
+	      Class.forName("com.mysql.jdbc.Driver").newInstance();
+	      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+	      String query =""; 
+	      query = "select * from inventory where sku ='"+item.getSku()+"' and itemCode='null' ;";
+	      
+	       PreparedStatement preparedStatement = con.prepareStatement(query);	
+		     ResultSet rs2 = preparedStatement.executeQuery();
+		     Blob blob=null;
+		     while (rs2.next())
+		     {
+		    	 result.setCategoryName(rs2.getString("category"));
+		    	 result.setSubCategoryName(rs2.getString("subCategory"));
+		    	 result.setSku(rs2.getString("sku"));
+		    	 result.setDescription(rs2.getString("description"));
+		    	 result.setNoOfButton(rs2.getString("noOfButtons"));
+		    	 result.setiC(rs2.getString("ic"));
+		    	 result.setBatteryPartNumber(rs2.getString("batteryPartNumber"));
+		    	 result.setFfcId(rs2.getString("fccid"));
+		    	 result.setEmergencyKey(rs2.getString("emergencyKey"));
+		    	 result.setButtonConfiguration(rs2.getString("buttonConfiguration"));
+		    	 result.setProductNotes(rs2.getString("productNotes"));
+		    	 result.setTransponder(rs2.getString("transponder"));
+		    	 blob=rs2.getBlob("imageURL");
+		    	 byte[] imgData=null;
+			     try
+			     {
+			    	 imgData = blob.getBytes(1, (int) blob.length());
+			     }
+			     catch(NullPointerException e)
+			     {
+			    	 System.out.println("No Image");
+			     }
+			     result.setImageURLByteArray(imgData);
+			     result.setBrand(rs2.getString("brand"));
+			     result.setModel(rs2.getString("model"));
+			     result.setTrim(rs2.getString("trim"));
+			     result.setFromYear(rs2.getString("fromYear"));
+			     result.setToYear(rs2.getString("toYear"));
+			 }
+		    con.close();
+			}
+	  catch(Exception e)
+	  {
+		 e.printStackTrace();
+		
+	  }
+	 
+	    return result;
+	
+}
+
+
+
+public ArrayList<String> changeLocationSearch(Item item)
+{
+	ArrayList<String> locationList=new ArrayList<String>();
+	
+	try{
+		
+	      Class.forName("com.mysql.jdbc.Driver").newInstance();
+	      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+	      String query ="";
+	      
+	      if (item.getItemCode()!=null || !(item.getItemCode().equals("")))
+	      query = "select * from inventory where  itemCode='"+item.getItemCode()+"' ;";
+	      else
+	      query = "select * from inventory where  sku-'"+item.getSku()+"' and invName='"+item.getInvName()+"' ;";
+	      System.out.println(query);
+	       PreparedStatement preparedStatement = con.prepareStatement(query);	
+		     ResultSet rs2 = preparedStatement.executeQuery();
+		     while (rs2.next())
+		     {
+		    	 String inventoryCode=getInventoryCode(rs2.getString("invName"));
+				    String itemCode=rs2.getString("itemCode");
+				    locationList.add(rs2.getString("sku"));  
+		    	 locationList.add(rs2.getString("category"));
+		    	 locationList.add(rs2.getString("subCategory"));
+		    	 
+		    	 locationList.add(rs2.getString("brand"));
+		    	 locationList.add(rs2.getString("model"));
+		    	 locationList.add(rs2.getString("trim"));
+		    	 locationList.add(rs2.getString("fromYear"));
+		    	 locationList.add(rs2.getString("toYear"));
+		    	 locationList.add(rs2.getString("itemCode"));
+			     locationList.add(itemCode.substring(inventoryCode.length(), 3));
+			    	locationList.add(itemCode.substring(inventoryCode.length()+1, 4));
+			    	locationList.add(itemCode.substring(inventoryCode.length()+2,5));
+			    	locationList.add(itemCode.substring(inventoryCode.length()+3, 6));
+			    	locationList.add(rs2.getString("invName"));
+		     }
+		    con.close();
+			}
+	  catch(Exception e)
+	  {
+		 e.printStackTrace();
+		
+	  }
+	 
+	    return locationList;
+	
+}
+public String updateUnassignedItem(Item object,String currentUser)
+{
+	String result="Update Failed";
+	InputStream inputStream=null;
+	InputStream exisitingImageInputStream=null;
+
+	
+	Date dNow = new Date( );
+	     SimpleDateFormat ft = 
+	     new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); 
+	try {
+		inputStream = object.getImageURL().getInputStream();
+	
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	catch (NullPointerException e1) {
+		// TODO Auto-generated catch block
+		System.out.println("No Image Found");
+	}
+	try{
+	     Class.forName("com.mysql.jdbc.Driver").newInstance();
+	      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+	      String query = "select imageURL from inventory where sku='"+object.getScheduleTIme()+"' and brand='null' and itemCode='null';";
+		  PreparedStatement preparedStatement = con.prepareStatement(query);	
+		  ResultSet rs = preparedStatement.executeQuery();
+		  Blob blob = null;
+		  Blob blob2 = null;
+	      while (rs.next())
+		     {
+		    	 blob=rs.getBlob("imageURL"); blob2=rs.getBlob("imageURL");
+		    	 try
+			     {
+		    		 exisitingImageInputStream= blob.getBinaryStream(1, (int) blob.length());
+			    }
+			     catch(NullPointerException e)
+			     {
+			    	 System.out.println("No Image");
+			     }
+		     }
+			
+	    
+    	 PreparedStatement pst2 = null ;
+    	 if (object.getImageURL().getSize()==0)
+			{
+	    	
+	    	 pst2 = con.prepareStatement("insert into inventory values(null,'"+object.getSku()+"','"+object.getInvName()+"','"+object.getBrand()+"','"+object.getItemCode()+"','"+object.getNoOfItems()+"',?,'"+object.getCategoryName()+"','"+object.getSubCategoryName()+"','"+object.getDescription()+
+    		 			"','"+object.getFfcId()+"','"+object.getiC()+"','"+object.getNoOfButton()+"','"+object.getButtonConfiguration()+"','"+object.getEmergencyKey()+"','"+object.getBatteryPartNumber()+"','"+object.getProductNotes()+"','"+object.getRestockLimit()+"','0','"+ft.format(dNow)+"','"+object.getModel()+"','"+object.getTrim()+"','"+object.getFromYear()+"','"+object.getToYear()+"',null,'"+object.getTransponder()+"');");
+	    	 pst2.setBinaryStream(1,exisitingImageInputStream);
+	    
+			}
+	     else
+	     {
+	    	  pst2 = con.prepareStatement("insert into inventory values(null,'"+object.getSku()+"','"+object.getInvName()+"','"+object.getBrand()+"','"+object.getItemCode()+"','"+object.getNoOfItems()+"',?,'"+object.getCategoryName()+"','"+object.getSubCategoryName()+"','"+object.getDescription()+
+    		 			"','"+object.getFfcId()+"','"+object.getiC()+"','"+object.getNoOfButton()+"','"+object.getButtonConfiguration()+"','"+object.getEmergencyKey()+"','"+object.getBatteryPartNumber()+"','"+object.getProductNotes()+"','"+object.getRestockLimit()+"','0','"+ft.format(dNow)+"','"+object.getModel()+"','"+object.getTrim()+"','"+object.getFromYear()+"','"+object.getToYear()+"',null,'"+object.getTransponder()+"');");
+	    	
+	    	  pst2.setBinaryStream(1,inputStream);
+	     }
+	      
+	     
+	     pst2.executeUpdate();
+	     PreparedStatement pst3 = null ;
+	     
+	     if (object.getImageURL().getSize()==0)
+			{
+	    	
+	    	 pst3 = con.prepareStatement("update inventory set sku='"+object.getSku()+"' , emergencyKey='"+object.getEmergencyKey()+"' ,  batteryPartNumber='"+object.getBatteryPartNumber()+"' ,  description='"+object.getDescription()+"' ,  fccid='"+object.getFfcId()+"' , ic='"+object.getiC()+"' , category='"+object.getCategoryName()+"' , subcategory='"+object.getSubCategoryName()+"' , productnotes='"+object.getProductNotes()+"' , noOfBUttons='"+object.getNoOfButton()+"' "
+	    	 		+ "			, buttonConfiguration='"+object.getButtonConfiguration()+"' , transponder='"+object.getTransponder()+"' , imageURL= ? where sku='"+object.getScheduleTIme()+"';"); 
+	    	 pst3.setBlob(1,blob2.getBinaryStream());
+	    	  
+	    //	 exisitingImageInputStream.close();
+			}
+	     else
+	     {
+	    	 pst3 = con.prepareStatement("update inventory set sku='"+object.getSku()+"' , emergencyKey='"+object.getEmergencyKey()+"' ,  batteryPartNumber='"+object.getBatteryPartNumber()+"' ,  description='"+object.getDescription()+"' ,  fccid='"+object.getFfcId()+"' ,  ic='"+object.getiC()+"' , category='"+object.getCategoryName()+"' , subcategory='"+object.getSubCategoryName()+"' , productnotes='"+object.getProductNotes()+"' , noOfBUttons='"+object.getNoOfButton()+"' "
+		    	 		+ "			, buttonConfiguration='"+object.getButtonConfiguration()+"' , transponder='"+object.getTransponder()+"' , imageURL= ? where sku='"+object.getScheduleTIme()+"';"); 
+	    	  pst3.setBlob(1,object.getImageURL().getInputStream());
+		    //	 inputStream.close();
+	     }
+	      
+	     
+	     pst3.executeUpdate();
+	     LogObject logObject=new LogObject();
+	     logObject.setBrand(object.getBrand());
+	     logObject.setCategory(object.getCategoryName());
+	     logObject.setSubCategory(object.getSubCategoryName());
+	     logObject.setSku(object.getSku());
+	     logObject.setNumber(object.getNoOfItems());
+	     logObject.setInvFrom(object.getInvName());
+	     logObject.setModel(object.getModel());
+	     takeLog(currentUser, "Update", logObject);
+	     result="Update Done";
+	     con.close();
+		}
+	  catch(Exception e)
+	  {
+		  result=result+"<br>"+e.getMessage();
+		 e.printStackTrace();
+	  }
+	
+	
+	
+	return result;
+	
+	
+	
+}
+
+
+
+public String updateAssignBrandTrimItem(Item object,String currentUser)
+{
+	String result="Update Failed";
+	InputStream inputStream=null;
+	InputStream exisitingImageInputStream=null;
+	  Date dNow = new Date( );
+	     SimpleDateFormat ft = 
+	     new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); 
+	try {
+		inputStream = object.getImageURL().getInputStream();
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	catch (NullPointerException e1) {
+		// TODO Auto-generated catch block
+		System.out.println("No Image Found");
+	}
+	try{
+	     Class.forName("com.mysql.jdbc.Driver").newInstance();
+	      Connection con = (Connection)DriverManager.getConnection(url+dbName,usr,password);
+	      String query = "select imageURL from inventory where sku='"+object.getScheduleTIme()+"'  and itemCode='null';";
+		  PreparedStatement preparedStatement = con.prepareStatement(query);	
+		  ResultSet rs = preparedStatement.executeQuery();
+		  Blob blob = null;
+		  Blob blob2 = null;
+	      while (rs.next())
+		     {
+		    	 blob=rs.getBlob("imageURL");
+		    	 blob2=rs.getBlob("imageURL");
+		    	 try
+			     {
+		    		 
+		    		 exisitingImageInputStream= blob.getBinaryStream(1, (int) blob.length());
+		    	}
+			     catch(NullPointerException e)
+			     {
+			    	 System.out.println("No Image");
+			     }
+		     }
+			
+	    
+    	 PreparedStatement pst2 = null ;
+    	 String qString="insert into inventory values(null,'"+object.getSku()+"','"+object.getInvName()+"','"+object.getBrand()+"','"+object.getItemCode()+"','"+object.getNoOfItems()+"',?,'"+object.getCategoryName()+"','"+object.getSubCategoryName()+"','"+object.getDescription()+
+		 			"','"+object.getFfcId()+"','"+object.getiC()+"','"+object.getNoOfButton()+"','"+object.getButtonConfiguration()+"','"+object.getEmergencyKey()+"','"+object.getBatteryPartNumber()+"','"+object.getProductNotes()+"','"+object.getRestockLimit()+"','0','"+ft.format(dNow)+"','"+object.getModel()+"','"+object.getTrim()+"','"+object.getFromYear()+"','"+object.getToYear()+"',null,'"+object.getTransponder()+"');";
+    	
+    	 pst2 = con.prepareStatement(qString);
+ 	
+    	 if (object.getImageURL().getSize()==0)
+			{
+    	
+	    	  pst2.setBlob(1,exisitingImageInputStream);
+			}
+	     else
+	     {
+	    	
+	    	  pst2.setBlob(1,inputStream);
+	     }
+	      
+	     
+	     pst2.executeUpdate();
+	     PreparedStatement pst3 = null ;
+	     if (object.getImageURL().getSize()==0)
+			{
+	    	
+	    	 pst3 = con.prepareStatement("update inventory set brand='"+object.getBrand()+"' , model='"+object.getModel()+"' , trim='"+object.getTrim()+"' , fromYear='"+object.getFromYear()+"' , toYear='"+object.getToYear()+"' , sku='"+object.getSku()+"' , emergencyKey='"+object.getEmergencyKey()+"' , batteryPartNumber='"+object.getBatteryPartNumber()+"' ,  description='"+object.getDescription()+"' ,  fccid='"+object.getFfcId()+"' , ic='"+object.getiC()+"' , category='"+object.getCategoryName()+"' , subcategory='"+object.getSubCategoryName()+"' , productnotes='"+object.getProductNotes()+"' , noOfBUttons='"+object.getNoOfButton()+"' "
+	    	 		+ "			, buttonConfiguration='"+object.getButtonConfiguration()+"' , transponder='"+object.getTransponder()+"' , imageURL=? where sku='"+object.getScheduleTIme()+"';"); 
+	    	 pst3.setBlob(1,blob2.getBinaryStream());
+			}
+	     else
+	     {
+	    	 pst3 = con.prepareStatement("update inventory set brand='"+object.getBrand()+"' , model='"+object.getModel()+"' , trim='"+object.getTrim()+"' , fromYear='"+object.getFromYear()+"' , toYear='"+object.getToYear()+"' , sku='"+object.getSku()+"' , emergencyKey='"+object.getEmergencyKey()+"' , batteryPartNumber='"+object.getBatteryPartNumber()+"' ,  description='"+object.getDescription()+"' ,  fccid='"+object.getFfcId()+"' , ic='"+object.getiC()+"' , category='"+object.getCategoryName()+"' , subcategory='"+object.getSubCategoryName()+"' , productnotes='"+object.getProductNotes()+"' , noOfBUttons='"+object.getNoOfButton()+"' "
+	    	 		+ "			, buttonConfiguration='"+object.getButtonConfiguration()+"' , transponder='"+object.getTransponder()+"' , imageURL=? where sku='"+object.getScheduleTIme()+"';"); 
+	    	  pst3.setBlob(1,object.getImageURL().getInputStream());
+	    	 
+	     }
+	      
+	     
+	     pst3.executeUpdate();
+	     LogObject logObject=new LogObject();
+	     logObject.setBrand(object.getBrand());
+	     logObject.setCategory(object.getCategoryName());
+	     logObject.setSubCategory(object.getSubCategoryName());
+	     logObject.setSku(object.getSku());
+	     logObject.setNumber(object.getNoOfItems());
+	     logObject.setInvFrom(object.getInvName());
+	     logObject.setModel(object.getModel());
+	     takeLog(currentUser, "Update", logObject);
+	     result="Update Done";
+	     con.close();
+		}
+	  catch(Exception e)
+	  {
+		  result=result+"<br>"+e.getMessage();
+		 e.printStackTrace();
+	  }
+	
+	
+	
+	return result;
+	
+	
+	
+}
+
+
+
 }

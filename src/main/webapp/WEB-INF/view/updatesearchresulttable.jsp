@@ -18,7 +18,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <body>
 <jsp:include page="employeeoptions.jsp" />
-<ca:form name="updateKeyInfoForm" action="updateKeyInfoForm"  modelAttribute = "updatesearchresulttable" enctype="multipart/form-data">
+<ca:form name="updateKeyInfoForm" action="updateKeyInfoFormEmployee"  modelAttribute = "updatesearchresulttable" enctype="multipart/form-data">
 <table class="table table-striped">
   <tr>
     <td>Item Code</td>

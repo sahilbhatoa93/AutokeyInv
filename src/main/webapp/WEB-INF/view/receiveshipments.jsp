@@ -35,12 +35,12 @@
 			<td></td>	
   </tr>
   <tr>
-    <td>Select Shipper's Name</td>
-    <td><select name="shipperName">
+    <td>Select Supplier's Name</td>
+    <td><select name="SupplierName">
  			 <option value="${selectedInvCodeFrom}" selected>${selectedInvCodeFrom}</option>
-   			 <c:forEach items="${shipperList}" var="shipper">
-        		<c:if test="${shipper != selected}">
-            		<option value="${shipper}">${shipper}</option>
+   			 <c:forEach items="${SupplierList}" var="Supplier">
+        		<c:if test="${Supplier != selected}">
+            		<option value="${Supplier}">${Supplier}</option>
         		</c:if>
         		</c:forEach>
 			</select></td>	
@@ -52,23 +52,23 @@
 			<td></td>	
   </tr>
   <tr>
-    <td>Shipper Name</td>
-    <td><input name="shipperName" type="text" /></td>	
+    <td>Supplier Name</td>
+    <td><input name="SupplierName" type="text" /></td>	
     <td></td>	
   </tr>
    <tr>
-    <td>Shipper Address</td>
-    <td><input name="shipperAddress" type="text" /></td>	
+    <td>Supplier Address</td>
+    <td><input name="SupplierAddress" type="text" /></td>	
     <td></td>	
   </tr>
    <tr>
-    <td>Shipper Email</td>
-    <td><input name="shipperEmail" type="text" /></td>	
+    <td>Supplier Email</td>
+    <td><input name="SupplierEmail" type="text" /></td>	
     <td></td>	
   </tr>
   <tr>
-    <td>Shipper Phone Number</td>
-    <td><input name="shipperPhoneNumber" type="number" /></td>	
+    <td>Supplier Phone Number</td>
+    <td><input name="SupplierPhoneNumber" type="number" /></td>	
     <td></td>	
   </tr>
   <tr>
